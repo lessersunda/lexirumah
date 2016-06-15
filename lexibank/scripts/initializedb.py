@@ -27,14 +27,12 @@ def main(args):
             domain="lexisunda.leiden.edu",
             contact="g.a.kaiping@hum.leidenuniv.nl",
             jsondata={
-                'license_icon': 'cc-by.png',
-                'license_name': 'Creative Commons Attribution 4.0 International License'})
+                'license_icon': "cc-by.png",
+                'license_name': "Creative Commons Attribution 4.0 International License"})
         DBSession.add(dataset)
 
     for provider in [
-        'transnewguinea',
-        'abvd',
-        'ids',
+        'sunda'
     ]:
         import_cldf(os.path.join(datadir, provider, 'cldf'), provider)
 
