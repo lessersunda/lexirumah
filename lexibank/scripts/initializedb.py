@@ -14,18 +14,18 @@ from lexibank.models import LexibankLanguage, Concept
 
 
 def main(args):
-    datadir = '/home/robert/venvs/glottobank/lexibank'
+    datadir = "P:/My Documents/Database/data/"
 
     with transaction.manager:
         dataset = common.Dataset(
             id=lexibank.__name__,
-            name="LexiBank",
-            publisher_name="Max Planck Institute for the Science of Human History",
-            publisher_place="Jena",
-            publisher_url="http://shh.mpg.de",
+            name="LexiSunDa",
+            publisher_name="Leiden University Centre for Linguistics",
+            publisher_place="Leiden",
+            publisher_url="http://https://www.universiteitleiden.nl/en/humanities/leiden-university-centre-for-linguistics",
             license="http://creativecommons.org/licenses/by/4.0/",
-            domain='lexibank.clld.org',
-            contact='forkel@shh.mpg.de',
+            domain="lexisunda.leiden.edu",
+            contact="g.a.kaiping@hum.leidenuniv.nl",
             jsondata={
                 'license_icon': 'cc-by.png',
                 'license_name': 'Creative Commons Attribution 4.0 International License'})
