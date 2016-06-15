@@ -1,13 +1,14 @@
-from __future__ import unicode_literals
+
 import os
 
 from nameparser import HumanName
 import transaction
 
-from clld.util import jsonload, slug
+from clldutils.misc import slug
+from json import load as jsonload
 from clld.db.meta import DBSession
 from clld.db.models.common import ValueSet, ContributionContributor, Contributor, Language
-from clld.lib.dsv import reader
+from clldutils.dsv import reader
 from clld.scripts.util import Data
 
 from clldclient.glottolog import Glottolog
@@ -120,9 +121,9 @@ def import_cldf(srcdir, provider):
                 try:
                     with transaction.manager:
                         import_dataset(os.path.join(dirpath, fname), provider)
-                        print os.path.join(dirpath, fname)
+                        print(os.path.join(dirpath, fname))
                 except:
-                    print 'ERROR'
+                    print('ERROR')
                     raise
                 #break
 

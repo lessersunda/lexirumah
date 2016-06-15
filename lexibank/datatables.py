@@ -11,7 +11,7 @@ from clld.web.datatables.value import Values, RefsCol
 from clld_glottologfamily_plugin.datatables import MacroareaCol, FamilyLinkCol
 from clld_glottologfamily_plugin.models import Family
 
-from models import LexibankLanguage, Counterpart, Concept, Cognateset, Wordlist
+from .models import LexibankLanguage, Counterpart, Concept, Cognateset, Wordlist
 
 
 class MaybeLinkCol(LinkCol):
