@@ -13,10 +13,10 @@
     </%util:well>
 </%def>
 
-<h2>Welcome to lexibank</h2>
+<h2>Welcome to lexiSunDa</h2>
 
 <p class="lead">
-    The lexicon of the world's languages.
+    The lexicon of the lesser Sunda Islands languages database.
 </p>
     <table class="table table-nonfluid">
         <tbody>
