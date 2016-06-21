@@ -13,12 +13,15 @@ from lexibank.scripts.util import import_cldf
 from lexibank.models import LexibankLanguage, Concept
 
 
+# Only while testing
+import random
+
 def main(args):
     datadir = "P:/My Documents/Database/data/"
 
     with transaction.manager:
         dataset = common.Dataset(
-            id=lexibank.__name__,
+            id=lexibank.__name__+str(random.randint(0,200000)),
             name="LexiSunDa",
             publisher_name="Leiden University Centre for Linguistics",
             publisher_place="Leiden",
@@ -34,10 +37,13 @@ def main(args):
     for provider in [
         'sunda'
     ]:
-        import_cldf(os.path.join(datadir, provider, 'cldf'), provider)
+        import_cldf(os.path.join(datadir, provider, "lexibank"), provider)
 
     with transaction.manager:
-        load_families(Data(), DBSession.query(LexibankLanguage), isolates_icon='tcccccc')
+        load_families(Data(),
+                      [(language.glottolog, language)
+                       for language in DBSession.query(LexibankLanguage)],
+                      isolates_icon='tcccccc')
 
 
 def prime_cache(args):

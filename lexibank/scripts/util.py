@@ -26,8 +26,9 @@ def import_dataset(path, provider):
 
     mdpath = path + '-metadata.json'
     assert os.path.exists(mdpath)
-    md = jsonload(mdpath)
-    md, parameters = md['properties'], md['parameters']
+    with open(mdpath) as mdfile:
+        md = jsonload(mdfile)
+    md, parameters, languages = md['properties'], md['parameters'], md.get('languages', {})
 
     cname = md['name']
     if 'id' in md:
@@ -63,18 +64,29 @@ def import_dataset(path, provider):
         vsid = '%s-%s-%s' % (basename, row['Language_ID'], fid)
         vid = '%s-%s-%s' % (provider, basename, i + 1)
 
-        if language:
-            assert language.id == row['Language_ID']
-        else:
-            language = Language.get(row['Language_ID'], default=None)
-            if language is None:
-                # query glottolog!
-                languoid = glottolog.languoid(row['Language_ID'])
+        language = Language.get(row['Language_ID'], default=None)
+        if language is None:
+            # Look it up in the metadata json
+            lang_id = row['Language_ID']
+            try:
                 language = LexibankLanguage(
-                    id=row['Language_ID'],
-                    name=languoid.name,
-                    latitude=languoid.latitude,
-                    longitude=languoid.longitude)
+                    id=lang_id,
+                    glottolog=languages[lang_id]['glottolog'],
+                    name=languages[lang_id]['name'],
+                    latitude=languages[lang_id]['lat'],
+                    longitude=languages[lang_id]['lon'])
+            # If it's not in there, query glottolog!
+            except KeyError:
+                try:
+                    languoid = glottolog.languoid(lang_id)
+                    language = LexibankLanguage(
+                        id=lang_id,
+                        glottolog=lang_id,
+                        name=languoid.name,
+                        latitude=languoid.latitude,
+                        longitude=languoid.longitude)
+                except AttributeError:
+                    raise KeyError("Language ID {:s} could not be found in metadata or in glottolog".format(lang_id))
 
         parameter = concepts.get(fid)
         if parameter is None:
@@ -110,6 +122,7 @@ def import_dataset(path, provider):
         #for key, src in data['Source'].items():
         #    if key in vs.source:
         #        ValueSetReference(valueset=vs, source=src, key=key)
+        DBSession.flush()
 
     contrib.language = language
 

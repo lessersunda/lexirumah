@@ -41,6 +41,7 @@ class Concept(CustomModelMixin, Parameter):
 @implementer(interfaces.ILanguage)
 class LexibankLanguage(CustomModelMixin, Language, HasFamilyMixin):
     pk = Column(Integer, ForeignKey('language.pk'), primary_key=True)
+    glottolog = Column(Unicode)
 
 
 @implementer(ICognateset)

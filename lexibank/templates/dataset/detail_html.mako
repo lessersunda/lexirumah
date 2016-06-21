@@ -9,14 +9,10 @@
 ##    </div>
 </%def>
 
-<h2>Welcome to lexibank</h2>
+<h2>Welcome to lexiSunDa</h2>
 
 <p class="lead">
-    The lexicon of the world's languages.
-</p>
-<p>
-    Currently, LexiBank contains data from ABVD, the Bantu section of ABVD, transnewguinea.org
-    and IDS.
+    The lexicon of the lesser Sunda Islands languages database.
 </p>
     <table class="table table-nonfluid">
         <tbody>
