@@ -3,6 +3,7 @@ import os
 
 from nameparser import HumanName
 import transaction
+import pandas
 
 from clldutils.misc import slug
 from json import load as jsonload
@@ -16,7 +17,7 @@ from clldclient.glottolog import Glottolog
 from lexibank.models import LexibankLanguage, Concept, Counterpart, Wordlist, Cognateset
 
 
-def import_dataset(path, provider):
+def import_dataset(path, concept_table, languages):
     # look for metadata
     # look for sources
     # then loop over values
@@ -28,7 +29,7 @@ def import_dataset(path, provider):
     assert os.path.exists(mdpath)
     with open(mdpath) as mdfile:
         md = jsonload(mdfile)
-    md, parameters, languages = md['properties'], md['parameters'], md.get('languages', {})
+    md = md['properties']
 
     cname = md['name']
     if 'id' in md:
@@ -56,44 +57,61 @@ def import_dataset(path, provider):
     concepts = {p.id: p for p in DBSession.query(Concept)}
     language = None
 
-    for i, row in enumerate(reader(path, dicts=True, delimiter=',')):
+    for i, row in pandas.io.parsers.read_csv(
+            path,
+            sep="," if path.endswith(".csv") else "\t",
+            encoding='utf-16').iterrows():
         if not row['Value'] or not row['Feature_ID']:
             continue
 
         fid = row['Feature_ID'].split('/')[-1]
         vsid = '%s-%s-%s' % (basename, row['Language_ID'], fid)
-        vid = '%s-%s-%s' % (provider, basename, i + 1)
+        vid = '%s-%s' % (basename, i + 1)
 
         language = Language.get(row['Language_ID'], default=None)
         if language is None:
-            # Look it up in the metadata json
+            # Look it up in the metadata table
             lang_id = row['Language_ID']
+            gid = (lang_id.split("-")[1]
+                   if lang_id.split("-")[0] == "p" else
+                   lang_id.split("-")[0])
             try:
                 language = LexibankLanguage(
                     id=lang_id,
-                    glottolog=languages[lang_id]['glottolog'],
-                    name=languages[lang_id]['name'],
-                    latitude=languages[lang_id]['lat'],
-                    longitude=languages[lang_id]['lon'])
+                    glottolog=gid,
+                    name=languages.loc[lang_id, 'Language name (-dialect)'],
+                    latitude=languages.loc[lang_id, 'Lat'],
+                    longitude=languages.loc[lang_id, 'Lon'])
             # If it's not in there, query glottolog!
             except KeyError:
                 try:
-                    languoid = glottolog.languoid(lang_id)
+                    languoid = glottolog.languoid(gid)
                     language = LexibankLanguage(
                         id=lang_id,
-                        glottolog=lang_id,
+                        glottolog=gid,
                         name=languoid.name,
                         latitude=languoid.latitude,
                         longitude=languoid.longitude)
                 except AttributeError:
+                    print("Language ID {:s} could not be found in metadata or in glottolog".format(lang_id))
+                    continue
                     raise KeyError("Language ID {:s} could not be found in metadata or in glottolog".format(lang_id))
-
-        parameter = concepts.get(fid)
-        if parameter is None:
-            concepts[fid] = parameter = Concept(
-                id=fid,
-                name=parameters[row['Feature_ID']],
-                concepticon_url=row['Feature_ID'])
+                
+        try:
+            parameter = concepts[fid]
+        except KeyError:
+            try:
+                concepts[fid] = parameter = Concept(
+                    id=fid,
+                    name=concept_table.loc[fid, "English"],
+                )
+            except KeyError:
+                print(fid, concept_table.index)
+                concepts[fid] = parameter = Concept(
+                    id=fid,
+                    name=fid,
+                )
+                
 
         vs = data['ValueSet'].get(vsid)
         if vs is None:
@@ -112,12 +130,15 @@ def import_dataset(path, provider):
             description=row.get('Comment'),
             loan=row.get('Loan') == 'yes')
 
-        if row.get('Cognate_Set'):
-            csid = row['Cognate_Set'].split(',')[0].strip()
+        if not pandas.isnull(row.get('Cognate Set')):
+            csid = row['Cognate Set'].split(',')[0].strip()
+            print("Cognate:", csid)
             cs = Cognateset.get(csid, key='name', default=None)
             if cs is None:
                 cs = Cognateset(name=csid)
             counterpart.cognateset = cs
+        else:
+            print("Cognate: null")
 
         #for key, src in data['Source'].items():
         #    if key in vs.source:
@@ -127,17 +148,14 @@ def import_dataset(path, provider):
     contrib.language = language
 
 
-def import_cldf(srcdir, provider):
+def import_cldf(srcdir, concepts, languages):
     for dirpath, dnames, fnames in os.walk(srcdir):
         for fname in fnames:
             if os.path.splitext(fname)[1] in ['.tsv', '.csv']:
                 try:
                     with transaction.manager:
-                        import_dataset(os.path.join(dirpath, fname), provider)
+                        import_dataset(os.path.join(dirpath, fname), concepts, languages)
                         print(os.path.join(dirpath, fname))
                 except:
                     print('ERROR')
                     raise
-                #break
-
-    pass

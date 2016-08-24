@@ -2,6 +2,7 @@
 import sys
 import os
 import transaction
+import pandas
 
 from clld.scripts.util import initializedb, Data
 from clld.db.meta import DBSession
@@ -17,15 +18,16 @@ from lexibank.models import LexibankLanguage, Concept
 import random
 
 def main(args):
-    datadir = "P:/My Documents/Database/data/"
-
+    datadir = "j:/ResearchData/HUM/LUCL-KlamerVICI/sunda_database/"
+    LEXIBANK_REPOS = os.path.join(datadir, "lexibank")
+    
     with transaction.manager:
         dataset = common.Dataset(
             id=lexibank.__name__+str(random.randint(0,200000)),
             name="LexiSunDa",
             publisher_name="Leiden University Centre for Linguistics",
             publisher_place="Leiden",
-            publisher_url="http://https://www.universiteitleiden.nl/en/humanities/leiden-university-centre-for-linguistics",
+            publisher_url="http://www.universiteitleiden.nl/en/humanities/leiden-university-centre-for-linguistics",
             license="http://creativecommons.org/licenses/by/4.0/",
             domain="lexisunda.leiden.edu",
             contact="g.a.kaiping@hum.leidenuniv.nl",
@@ -34,15 +36,20 @@ def main(args):
                 'license_name': "Creative Commons Attribution 4.0 International License"})
         DBSession.add(dataset)
 
-    for provider in [
-        'sunda'
-    ]:
-        import_cldf(os.path.join(datadir, provider, "lexibank"), provider)
+    concepts = pandas.io.parsers.read_csv(os.path.join(LEXIBANK_REPOS, "concepts.tsv"),
+                                          index_col="Concept ID", sep="\t", encoding="utf-16")
+    languages = pandas.io.parsers.read_csv(os.path.join(datadir, "languages.tsv"),
+                                           index_col="Language ID", encoding="utf-16", sep="\t")
+    print(languages)
+    import_cldf(os.path.join(LEXIBANK_REPOS, "datasets"), concepts, languages)
 
     with transaction.manager:
         load_families(Data(),
-                      [(language.glottolog, language)
-                       for language in DBSession.query(LexibankLanguage)],
+                      #FIXME: THROW AN ERROR INSTEAD OF ASSUMING IT'S AUSTRONESIAN
+                      [(("aust1307" if pandas.isnull(language.glottolog) else language.glottolog),
+                        language)
+                       for language in DBSession.query(LexibankLanguage)
+                       if language],
                       isolates_icon='tcccccc')
 
 

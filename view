@@ -1,0 +1,18 @@
+SELECT
+           language.name AS language,
+           parameter.name AS meaning,
+           v.name AS name,
+           counterpart.loan,
+           cognateset.name AS cognateset
+      FROM value v
+           JOIN
+           counterpart ON counterpart.pk == v.pk
+           left JOIN
+           cognateset ON counterpart.cognateset_pk == cognateset.pk
+           JOIN
+           valueset ON valueset.pk == v.valueset_pk
+           JOIN
+           language ON valueset.language_pk == language.pk
+           JOIN
+           parameter ON parameter.pk == valueset.parameter_pk
+   ORDER BY meaning
