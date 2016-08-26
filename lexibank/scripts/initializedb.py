@@ -1,8 +1,10 @@
 from __future__ import unicode_literals, division
+
 import sys
 import transaction
 import os
 from _collections import defaultdict
+import pandas
 
 from sqlalchemy import Index, func
 from sqlalchemy.orm import joinedload_all
@@ -26,50 +28,45 @@ from lexibank.models import (
 with_collkey_ddl()
 
 
+# Only while testing
+import random
+
 def main(args):
     Index('ducet', collkey(common.Value.name)).create(DBSession.bind)
     repos = Path(os.path.expanduser('~')).joinpath('venvs/lexibank/lexibank-data')
-
+    datadir = "j:/ResearchData/HUM/LUCL-KlamerVICI/sunda_database/"
+    LEXIBANK_REPOS = os.path.join(datadir, "lexibank")
+    
     with transaction.manager:
         dataset = common.Dataset(
-            id=lexibank.__name__,
-            name="lexibank",
-            publisher_name="Max Planck Institute for the Science of Human History",
-            publisher_place="Jena",
-            publisher_url="http://shh.mpg.de",
+            id=lexibank.__name__+str(random.randint(0,200000)),
+            name="LexiSunDa",
+            publisher_name="Leiden University Centre for Linguistics",
+            publisher_place="Leiden",
+            publisher_url="http://www.universiteitleiden.nl/en/humanities/leiden-university-centre-for-linguistics",
             license="http://creativecommons.org/licenses/by/4.0/",
-            domain='lexibank.clld.org',
-            contact='forkel@shh.mpg.de',
+            domain="lexisunda.leiden.edu",
+            contact="g.a.kaiping@hum.leidenuniv.nl",
             jsondata={
-                'license_icon': 'cc-by.png',
-                'license_name': 'Creative Commons Attribution 4.0 International License'})
+                'license_icon': "cc-by.png",
+                'license_name': "Creative Commons Attribution 4.0 International License"})
         DBSession.add(dataset)
 
-    glottolog = Glottolog(
-        Path(lexibank.__file__).parent.parent.parent.parent.joinpath('glottolog3', 'glottolog'))
-    languoids = {l.id: l for l in glottolog.languoids()}
-    concepticon = Concepticon(
-        Path(lexibank.__file__).parent.parent.parent.parent.joinpath('concepticon', 'concepticon-data'))
-    conceptsets = {c['ID']: c for c in concepticon.conceptsets()}
-
-    for dname in repos.joinpath('datasets').iterdir():
-        #if dname.name not in ['wwua', 'pcogs']:
-        #    continue
-        if dname.is_dir() and dname.name != '_template':
-            #if dname.name != 'zenodo34092':
-            #    continue
-            mdpath = dname.joinpath('metadata.json')
-            if mdpath.exists():
-                print(dname.name)
-                import_cldf(dname, load(mdpath), languoids, conceptsets)
+    concepts = pandas.io.parsers.read_csv(os.path.join(LEXIBANK_REPOS, "concepts.tsv"),
+                                          index_col="Concept ID", sep="\t", encoding="utf-16")
+    languages = pandas.io.parsers.read_csv(os.path.join(datadir, "languages.tsv"),
+                                           index_col="Language ID", encoding="utf-16", sep="\t")
+    print(languages)
+    import_cldf(os.path.join(LEXIBANK_REPOS, "datasets"), concepts, languages)
 
     with transaction.manager:
-        load_families(
-            Data(),
-            DBSession.query(LexibankLanguage),
-            glottolog=languoids,
-            isolates_icon='tcccccc')
-
+        load_families(Data(),
+                      #FIXME: THROW AN ERROR INSTEAD OF ASSUMING IT'S AUSTRONESIAN
+                      [(("aust1307" if pandas.isnull(language.glottolog) else language.glottolog),
+                        language)
+                       for language in DBSession.query(LexibankLanguage)
+                       if language],
+                      isolates_icon='tcccccc')
 
 def prime_cache(args):
     """If data needs to be denormalized for lookup, do that here.
@@ -86,7 +83,7 @@ def prime_cache(args):
         concepts = set()
         for cp in cogset.counterparts:
             concepts.add(cp.counterpart.valueset.parameter_pk)
-        cogset.name = '-'.join(sorted([concept_labels[pk] for pk in concepts]))
+        #cogset.name = '-'.join(sorted([concept_labels[pk] for pk in concepts]))
         cogset.representation = len(cogset.counterparts)
 
     for concept in DBSession.query(Concept):
