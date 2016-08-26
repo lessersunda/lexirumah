@@ -6,7 +6,8 @@ from sqlalchemy.orm import joinedload, joinedload_all
 from clld.db.meta import DBSession
 from clld.db.util import get_distinct_values
 from clld.db.models.common import Value, Contribution, ValueSet, Parameter, Language
-from clld.web.util.helpers import external_link, linked_references
+from clld.web.util.htmllib import HTML
+from clld.web.util.helpers import external_link, linked_references, link
 
 from clld.web.datatables.base import Col, IdCol, LinkCol, LinkToMapCol, DataTable
 from clld.web.datatables.language import Languages
@@ -55,6 +56,23 @@ class RefsCol(Col):
     def format(self, item):
         return linked_references(self.dt.req, item)
 
+
+class CognatesetsCol(Col):
+    __kw__ = dict(bSearchable=False, bSortable=False)
+
+    def format(self, obj):
+        req = self.dt.req
+        chunks = []
+        for i, cs in enumerate(obj.cognatesets):
+            if i!= 0:
+                chunks.append("; ")
+            chunks.append(link(req, cs.cognateset, label=cs.cognateset.name))
+        if chunks:
+            return HTML.span(*chunks)
+        return ''
+
+    def get_object(self, item):
+        return item
 
 class Counterparts(Values):
     def base_query(self, query):
@@ -109,6 +127,7 @@ class Counterparts(Values):
                 Col(self, 'variety', model_col=Counterpart.variety_name),
                 #Col(self, 'loan', model_col=Counterpart.loan),
                 RefsCol(self, 'source'),
+                CognatesetsCol(self, 'cognate sets'),
             ]
         if self.language:
             return [
