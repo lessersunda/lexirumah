@@ -9,6 +9,7 @@ from clld.db.models.common import Contribution, ValueSet, Value
 # we must make sure custom models are known at database initialization!
 from lexibank import models
 from lexibank.interfaces import ICognateset
+from lexibank.editor import addtosubmit, submit
 
 
 _ = lambda s: s
@@ -52,7 +53,6 @@ class MyMapMarker(LanguageByFamilyMapMarker):
             ctx = ctx.language
         return LanguageByFamilyMapMarker.get_icon(self, ctx, req)
 
-
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -62,4 +62,9 @@ def main(global_config, **settings):
     config.registry.registerUtility(MyMapMarker(), IMapMarker)
     config.registry.registerUtility(LexibankCtxFactoryQuery(), ICtxFactoryQuery)
     config.register_resource('cognateset', models.Cognateset, ICognateset, with_index=True)
+
+    config.add_view(view=submit, name="submit_edit")
+    config.add_view(view=addtosubmit, name="edit")
     return config.make_wsgi_app()
+
+

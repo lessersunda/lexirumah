@@ -63,7 +63,8 @@ def import_dataset(path, contrib, languoids, conceptsets):
             sep="," if path.endswith(".csv") else "\t",
             encoding='utf-16').iterrows():
         id += 1
-        if not row['Value'] or not row['Feature_ID']:
+        row['Feature_ID'] = str(row['Feature_ID'])
+        if pandas.isnull(row['Value']) or pandas.isnull(row['Feature_ID']):
             continue
 
         fid = row['Feature_ID'].split('/')[-1]
@@ -78,7 +79,7 @@ def import_dataset(path, contrib, languoids, conceptsets):
             try:
                 language = LexibankLanguage(
                     id=lang_id,
-                    glottolog=gid,
+                    #glottolog=gid,
                     name=languoids.loc[lang_id, 'Language name (-dialect)'],
                     latitude=languoids.loc[lang_id, 'Lat'],
                     longitude=languoids.loc[lang_id, 'Lon'])
@@ -88,7 +89,7 @@ def import_dataset(path, contrib, languoids, conceptsets):
                     languoid = glottolog.languoid(gid)
                     language = LexibankLanguage(
                         id=lang_id,
-                        glottolog=gid,
+                        #glottolog=gid,
                         name=languoid.name,
                         latitude=languoid.latitude,
                         longitude=languoid.longitude)
