@@ -53,15 +53,12 @@ class Concept(CustomModelMixin, Parameter):
 
     @property
     def concepticon_url(self):
-        return 'http://concepticon.clld.org/parameters/{0}'.format(self.id)
+        return 'http://concepticon.clld.org/parameters/{0}'.format(self.representation)
 
 
 @implementer(interfaces.ILanguage)
 class LexibankLanguage(CustomModelMixin, Language, HasFamilyMixin):
     pk = Column(Integer, ForeignKey('language.pk'), primary_key=True)
-<<<<<<< HEAD
-    glottolog = Column(Unicode)
-=======
     level = Column(Unicode)
 
 
@@ -70,7 +67,6 @@ class LexibankSource(CustomModelMixin, Source):
     pk = Column(Integer, ForeignKey('source.pk'), primary_key=True)
     provider_pk = Column(Integer, ForeignKey('provider.pk'))
     provider = relationship(Provider, backref='sources')
->>>>>>> d8f6a649cd4dceebad1c159f702c9944499d5a44
 
 
 @implementer(ICognateset)
