@@ -53,7 +53,7 @@ class Concept(CustomModelMixin, Parameter):
 
     @property
     def concepticon_url(self):
-        return 'http://concepticon.clld.org/parameters/{0}'.format(self.id)
+        return 'http://concepticon.clld.org/parameters/{0}'.format(self.representation)
 
 
 @implementer(interfaces.ILanguage)
