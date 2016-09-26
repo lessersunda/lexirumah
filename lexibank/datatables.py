@@ -1,17 +1,44 @@
-from clld.db.util import get_distinct_values, icontains
-from clld.db.models.common import Value
-from clld.web.util.helpers import map_marker_img, external_link
-from clld.web.util.htmllib import HTML
+# coding: utf-8
+from __future__ import unicode_literals
 
-from clld.web.datatables.base import Col, IdCol, LinkCol, DetailsRowLinkCol, LinkToMapCol
+from sqlalchemy.orm import joinedload, joinedload_all
+
+from clld.db.meta import DBSession
+from clld.db.util import get_distinct_values
+from clld.db.models.common import Value, Contribution, ValueSet, Parameter, Language
+from clld.web.util.helpers import external_link, linked_references
+
+from clld.web.datatables.base import Col, IdCol, LinkCol, LinkToMapCol, DataTable
 from clld.web.datatables.language import Languages
 from clld.web.datatables.parameter import Parameters
-from clld.web.datatables.value import Values, RefsCol
+from clld.web.datatables.value import Values
+from clld.web.datatables.contribution import Contributions
+from clld.web.datatables.source import Sources
 
 from clld_glottologfamily_plugin.datatables import MacroareaCol, FamilyLinkCol
 from clld_glottologfamily_plugin.models import Family
 
-from .models import LexibankLanguage, Counterpart, Concept, Cognateset, Wordlist
+from .models import (
+    LexibankLanguage, Counterpart, Concept, Provider, LexibankSource,
+    CounterpartReference, Cognateset,
+)
+
+
+class LexibankSources(Sources):
+    def base_query(self, query):
+        query = Sources.base_query(self, query)
+        query = query.join(LexibankSource.provider).options(joinedload(LexibankSource.provider))
+        return query
+
+    def col_defs(self):
+        cols = Sources.col_defs(self)
+        provider = LinkCol(
+            self,
+            'provider',
+            choices=get_distinct_values(Provider.name),
+            model_col=Provider.name,
+            get_object=lambda i: i.provider)
+        return cols[:-1] + [provider]
 
 
 class MaybeLinkCol(LinkCol):
@@ -22,14 +49,48 @@ class MaybeLinkCol(LinkCol):
         return ''
 
 
+class RefsCol(Col):
+    __kw__ = dict(bSearchable=False, bSortable=False)
+
+    def format(self, item):
+        return linked_references(self.dt.req, item)
+
+
 class Counterparts(Values):
     def base_query(self, query):
-        query = Values.base_query(self, query)
+        query = query.join(ValueSet).options(
+            joinedload(Value.valueset),
+            joinedload_all(Counterpart.references, CounterpartReference.source)
+        )
+
+        if self.language:
+            query = query \
+                .join(ValueSet.parameter) \
+                .join(ValueSet.contribution) \
+                .options(
+                    joinedload(Value.valueset, ValueSet.contribution),
+                    joinedload(Value.valueset, ValueSet.parameter))
+            return query.filter(ValueSet.language_pk == self.language.pk)
+
         if self.parameter:
-            query = query\
-                .outerjoin(Counterpart.cognateset)\
-                .outerjoin(LexibankLanguage.family)
-        return query
+            query = query \
+                .join(ValueSet.language) \
+                .outerjoin(LexibankLanguage.family) \
+                .options(joinedload_all(
+                    Value.valueset, ValueSet.language, LexibankLanguage.family))
+            return query.filter(ValueSet.parameter_pk == self.parameter.pk)
+
+        if self.contribution:
+            query = query.join(ValueSet.parameter)
+            return query.filter(ValueSet.contribution_pk == self.contribution.pk)
+
+        return query \
+            .join(ValueSet.parameter)\
+            .join(ValueSet.language)\
+            .options(
+                joinedload(Value.valueset, ValueSet.parameter),
+                joinedload(Value.valueset, ValueSet.language),
+            )
 
     def col_defs(self):
         if self.parameter:
@@ -45,28 +106,8 @@ class Counterparts(Values):
                     'family',
                     model_col=Family.name,
                     get_object=lambda i: i.valueset.language.family),
-                MaybeLinkCol(
-                    self,
-                    'cognate_set',
-                    model_col=Cognateset.name,
-                    get_object=lambda i: i.cognateset),
-                Col(self, 'loan', model_col=Counterpart.loan),
-            ]
-        if self.contribution:
-            return [
-                LinkCol(self, 'form', model_col=Counterpart.name),
-                LinkCol(
-                    self,
-                    'concept',
-                    model_col=Concept.name,
-                    get_object=lambda i: i.valueset.parameter),
-                Col(self, 'annotation', model_col=Value.description),
-                MaybeLinkCol(
-                    self,
-                    'cognate_set',
-                    model_col=Cognateset.name,
-                    get_object=lambda i: i.cognateset),
-                Col(self, 'loan', model_col=Counterpart.loan),
+                Col(self, 'variety', model_col=Counterpart.variety_name),
+                #Col(self, 'loan', model_col=Counterpart.loan),
                 RefsCol(self, 'source'),
             ]
         if self.language:
@@ -77,13 +118,28 @@ class Counterparts(Values):
                     'concept',
                     model_col=Concept.name,
                     get_object=lambda i: i.valueset.parameter),
+                Col(self, 'variety', model_col=Counterpart.variety_name),
                 LinkCol(
                     self,
-                    'wordlist',
-                    model_col=Wordlist.name,
+                    'provider',
+                    model_col=Contribution.name,
                     get_object=lambda i: i.valueset.contribution),
+                RefsCol(self, 'source'),
             ]
-        return Values.col_defs(self)
+        return [
+            LinkCol(self, 'form', model_col=Value.name),
+            Col(self, 'context', model_col=Counterpart.context),
+            LinkCol(
+                self,
+                'language',
+                model_col=Language.name,
+                get_object=lambda i: i.valueset.language),
+            LinkCol(
+                self,
+                'concept',
+                model_col=Parameter.name,
+                get_object=lambda i: i.valueset.parameter),
+        ]
 
 
 #class FeatureIdCol(IdCol):
@@ -101,8 +157,16 @@ class LanguageIdCol(LinkCol):
 
 
 class LexibankLanguages(Languages):
+    __constraints__ = [Contribution]
+
     def base_query(self, query):
-        return query.outerjoin(Family)
+        if self.contribution:
+            sq = DBSession.query(ValueSet.language_pk)\
+                .filter(ValueSet.contribution_pk == self.contribution.pk)\
+                .distinct()\
+                .subquery()
+            query = query.filter(LexibankLanguage.pk.in_(sq))
+        return query.outerjoin(Family).options(joinedload(LexibankLanguage.family))
 
     def col_defs(self):
         return [
@@ -131,13 +195,65 @@ class Concepts(Parameters):
     def col_defs(self):
         return [
             IdCol(self, 'id'),
-            LinkCol(self, 'Concept'),
+            LinkCol(self, 'name', sTitle='Concept'),
             Col(self, 'Languages', model_col=Concept.representation),
+            Col(self, 'semantic_field', model_col=Concept.semanticfield, choices=get_distinct_values(Concept.semanticfield)),
             ConcepticonLink(self, 'Concepticon'),
         ]
 
 
+class Providers(Contributions):
+    def col_defs(self):
+        return [
+            IdCol(self, 'id'),
+            LinkCol(self, 'name'),
+            Col(self, 'cite', model_col=Contribution.description),
+            Col(self, 'language_count', sTitle='# languages', model_col=Provider.language_count),
+            Col(self, 'parameter_count', sTitle='# concepts', model_col=Provider.parameter_count),
+            Col(self,
+                'lexeme_count',
+                sTitle='# lexemes',
+                model_col=Provider.lexeme_count,
+                format=lambda i: '{:,}'.format(i.lexeme_count)),
+            Col(self,
+                'synonymy',
+                sDescription=Provider.synonym_index.doc,
+                model_col=Provider.synonym_index,
+                format=lambda i: '{:.3f}'.format(i.synonym_index))
+        ]
+
+
+class ProviderCol(LinkCol):
+    def __init__(self, dt, name, **kw):
+        kw['model_col'] = Contribution.name
+        kw['choices'] = [(p.id, p.name) for p in DBSession.query(Provider)]
+        LinkCol.__init__(self, dt, name, **kw)
+
+    def search(self, qs):
+        return Contribution.id == qs
+
+
+class Cognatesets(DataTable):
+    def base_query(self, query):
+        return query.join(Cognateset.contribution)\
+            .options(joinedload(Cognateset.contribution))
+
+    def col_defs(self):
+        return [
+            IdCol(self, 'id'),
+            LinkCol(self, 'name'),
+            Col(self, 'cognates', model_col=Cognateset.representation),
+            ProviderCol(
+                self,
+                'provider',
+                get_object=lambda i: i.contribution),
+        ]
+
+
 def includeme(config):
+    config.register_datatable('cognatesets', Cognatesets)
     config.register_datatable('languages', LexibankLanguages)
+    config.register_datatable('contributions', Providers)
     config.register_datatable('parameters', Concepts)
     config.register_datatable('values', Counterparts)
+    config.register_datatable('sources', LexibankSources)
