@@ -50,10 +50,11 @@ class Concept(CustomModelMixin, Parameter):
     pk = Column(Integer, ForeignKey('parameter.pk'), primary_key=True)
     representation = Column(Integer)
     semanticfield = Column(Unicode)
+    concepticon_id = Column(Integer)
 
     @property
     def concepticon_url(self):
-        return 'http://concepticon.clld.org/parameters/{0}'.format(self.id)
+        return 'http://concepticon.clld.org/parameters/{0}'.format(self.concepticon_id)
 
 
 @implementer(interfaces.ILanguage)

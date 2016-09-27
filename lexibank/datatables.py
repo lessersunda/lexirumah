@@ -233,7 +233,7 @@ class Providers(Contributions):
                 'lexeme_count',
                 sTitle='# lexemes',
                 model_col=Provider.lexeme_count,
-                format=lambda i: '{:,}'.format(i.lexeme_count)),
+                format=lambda i: '{:}'.format(i.lexeme_count)),
             Col(self,
                 'synonymy',
                 sDescription=Provider.synonym_index.doc,

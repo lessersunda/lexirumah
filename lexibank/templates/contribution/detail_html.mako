@@ -19,7 +19,7 @@
     </tr>
     <tr>
         <td>Lexemes</td>
-        <td class="right">${'{0:,}'.format(ctx.lexeme_count)}</td>
+        <td class="right">${'{0:}'.format(ctx.lexeme_count)}</td>
     </tr>
     <tr>
         <td>

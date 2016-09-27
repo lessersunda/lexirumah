@@ -38,7 +38,7 @@ def value_detail_html(context=None, request=None, **kw):
 
 def contribution_detail_html(context=None, request=None, **kw):
     langs = DBSession.query(Language)\
-        .filter(Language.pk.in_(context.jsondata['language_pks']))\
+        .filter(Language.pk.in_(context.jsondata.get('language_pks', [])))\
         .options(joinedload(LexibankLanguage.family))
     return {'map': SelectedLanguagesMap(context, request, list(langs))}
 
