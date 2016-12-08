@@ -34,15 +34,19 @@ class Provider(CustomModelMixin, Contribution):
     url = Column(Unicode)
     license = Column(Unicode)
     aboutUrl = Column(Unicode)
+    references_text = Column(Unicode)
+    # For the moment, references_text will mix sources (media files) and
+    # references (publications), into a Unicode column. They will each
+    # become different Models in the future.
     language_count = Column(Integer)
     parameter_count = Column(Integer)
     lexeme_count = Column(Integer)
     synonym_index = Column(
         Float,
         default=0.0,
-        doc="""A measure how often a dataset provides multiple synonyms for
-a concept in a language. 1 means for each concept in each language at most one counterpart
-is given.""")
+        doc="""A measure how often a dataset provides multiple synonyms for a
+concept in a language. 1 means for each concept in each language at
+most one counterpart is given.""")
 
 
 @implementer(interfaces.IParameter)
