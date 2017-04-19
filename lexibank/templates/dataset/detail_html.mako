@@ -4,20 +4,26 @@
 <%def name="sidebar()">
     <img src="${request.static_url('lexibank:static/glottobank_all.jpg')}"/>
 
-    <%util:well title="lexibank data repository">
-        <a href="${req.resource_url(req.dataset)}" style="font-family: monospace">lexibank.clld.org</a>
+    <%util:well title="LexiRumah">
+        <a href="${req.resource_url(req.dataset)}" style="font-family: monospace">lessersunda.ullet.nl/lexirumah</a>
         serves the latest
-        ${h.external_link('https://github.com/glottobank/lexibank-data/releases', label='released version')}
+        ${h.external_link('https://github.com/Anaphory/lexirumah-data/releases', label='released version')}
         of data curated at
-        ${h.external_link('https://github.com/glottobank/lexibank-data', label='glottobank/lexibank-data')}.
+        ${h.external_link('https://github.com/Anaphory/lexirumah-data', label='github:Anaphory/lexirumah-data')}.
     </%util:well>
 </%def>
 
-<h2>Welcome to lexiSunDa</h2>
+<h2>Welcome to LexiRumah</h2>
 
-<p class="lead">
-    The lexicon of the lesser Sunda Islands languages database.
-</p>
+<p class="lead"> LexiRumah (from <i>Lexicon</i> and Ind. <i>Rumah</i>
+    = house) is an online database containing lexical data about
+    languages of the Lesser Sunda islands. The database contains
+    mostly IPA-transcribed wordlist data taken from referenced sources
+    or collected by the NWO Vici projet <a
+    href="http://www.vici.marianklamer.org/">“Reconstructing the past
+    through languages of the present: the Lesser Sunda Islands”</a> at
+    Leiden University.</p>
+
     <table class="table table-nonfluid">
         <tbody>
             <tr>
