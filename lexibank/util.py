@@ -10,6 +10,7 @@ from clld.web.util.htmllib import HTML
 from clld.web.maps import SelectedLanguagesMap
 
 from lexibank.models import LexibankLanguage
+from lexibank.maps import HighZoomSelectedLanguagesMap
 
 
 def concepticon_link(request, concept):
@@ -38,7 +39,7 @@ def contribution_detail_html(context=None, request=None, **kw):
     langs = DBSession.query(Language)\
         .filter(Language.pk.in_(context.jsondata['language_pks']))\
         .options(joinedload(LexibankLanguage.family))
-    return {'map': SelectedLanguagesMap(context, request, list(langs))}
+    return {'map': HighZoomSelectedLanguagesMap(context, request, list(langs))}
 
 
 def dataset_detail_html(context=None, request=None, **kw):
