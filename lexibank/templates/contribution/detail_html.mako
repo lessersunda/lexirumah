@@ -4,9 +4,13 @@
 
 <h2>${_('Contribution')} ${ctx.name}</h2>
 
+<p>
+${ctx.description}
+</p>
+
 <small>cite as</small>
 <blockquote>
-    ${ctx.description}
+    ${ctx.jsondata['sources']}
 </blockquote>
 % if ctx.url:
     <p>Available online at ${h.external_link(ctx.url)}</p>
