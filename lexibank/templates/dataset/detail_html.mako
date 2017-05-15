@@ -19,7 +19,7 @@
     = house) is an online database containing lexical data about
     languages of the Lesser Sunda islands. The database contains
     mostly IPA-transcribed wordlist data taken from referenced sources
-    or collected by the NWO Vici projet <a
+    or collected by the NWO Vici project <a
     href="http://www.vici.marianklamer.org/">“Reconstructing the past
     through languages of the present: the Lesser Sunda Islands”</a> at
     Leiden University.</p>
