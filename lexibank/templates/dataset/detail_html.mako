@@ -1,3 +1,4 @@
+<%! from datetime import date %>
 <%inherit file="../home_comp.mako"/>
 <%namespace name="util" file="../util.mako"/>
 
@@ -23,6 +24,24 @@
     href="http://www.vici.marianklamer.org/">“Reconstructing the past
     through languages of the present: the Lesser Sunda Islands”</a> at
     Leiden University.</p>
+
+<h3> How to cite LexiRumah</h3>
+<p>
+  LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
+  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.)
+    <i>LexiRumah</i>.
+    Leiden: Leiden University Centre for Linguistics, 2017. Available online at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on ${date.today()}.
+    </%block>
+  </blockquote>
+</p>
+<p>
+  It is important to cite the specific reference (printed source, data
+  collector) that you are taking information from. Every item in the
+  database is linked to its reference, please cite them accordingly
+  as, for example
+  <blockquote>LINKED_REFERENCE_OBJECT. In: ${cite_us()}</blockquote>
+</p>
+                            
 
     <table class="table table-nonfluid">
         <tbody>
