@@ -3,7 +3,7 @@
 <%namespace name="util" file="../util.mako"/>
 
 <%def name="sidebar()">
-    <img src="${request.static_url('lexibank:static/glottobank_all.jpg')}"/>
+    <img src="${request.static_url('lexibank:static/logo.png')}"/>
 
     <%util:well title="LexiRumah">
         <a href="${req.resource_url(req.dataset)}" style="font-family: monospace">lessersunda.ullet.nl/lexirumah</a>
