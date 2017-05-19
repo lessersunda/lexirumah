@@ -34,7 +34,7 @@ class LexibankSources(Sources):
         cols = Sources.col_defs(self)
         provider = LinkCol(
             self,
-            'provider',
+            'reference',
             choices=get_distinct_values(Provider.name),
             model_col=Provider.name,
             get_object=lambda i: i.provider)
@@ -99,7 +99,13 @@ class Counterparts(Values):
                     'family',
                     model_col=Family.name,
                     get_object=lambda i: i.valueset.language.family),
-                #Col(self, 'loan', model_col=Counterpart.loan),
+                MacroareaCol(self, 'region', LexibankLanguage, get_object=lambda i: i.valueset.language),
+                LinkCol(
+                    self,
+                    'reference',
+                    model_col=Contribution.name,
+                    get_object=lambda i: i.valueset.contribution),
+               #Col(self, 'loan', model_col=Counterpart.loan),
             ]
         if self.language:
             return [
@@ -111,7 +117,7 @@ class Counterparts(Values):
                 LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
-                    'provider',
+                    'reference',
                     model_col=Contribution.name,
                     get_object=lambda i: i.valueset.contribution),
                 #Col(self, 'loan', model_col=Counterpart.loan),
@@ -235,7 +241,7 @@ class Cognatesets(DataTable):
             Col(self, 'cognates', model_col=Cognateset.representation),
             ProviderCol(
                 self,
-                'provider',
+                'reference',
                 get_object=lambda i: i.contribution),
         ]
 

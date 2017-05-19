@@ -27,19 +27,19 @@ msgstr "Concepts"
 
 #: lexibank/__init__.py:13
 msgid "Contribution"
-msgstr "Dataset"
+msgstr "Reference"
 
 #: lexibank/__init__.py:14
 msgid "Contributions"
-msgstr "Datasets"
+msgstr "References"
 
 #: lexibank/__init__.py:15
 msgid "Value"
-msgstr "Counterpart"
+msgstr "Word"
 
 #: lexibank/__init__.py:16
 msgid "Values"
-msgstr "Counterparts"
+msgstr "Words"
 
 #: lexibank/__init__.py:17
 msgid "Valueset"
