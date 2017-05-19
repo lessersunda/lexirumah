@@ -48,6 +48,7 @@
         </tr>
     % endif
     % if ctx.cognatesets:
+    <!--
         <tr>
             <th>Cognatesets:</th>
             <td>
@@ -60,6 +61,7 @@
                 </ul>
             </td>
         </tr>
+    -->
     % endif
 </table>
 
