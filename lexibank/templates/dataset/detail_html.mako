@@ -19,19 +19,32 @@
 <p class="lead"> LexiRumah (from <i>Lexicon</i> and Ind. <i>Rumah</i>
     = house) is an online database containing lexical data about
     languages of the Lesser Sunda islands. The database contains
-    mostly IPA-transcribed wordlist data taken from referenced sources
-    or collected by the NWO Vici project <a
+    transcribed wordlist data and was set up and is maintained by the
+    NWO Vici
+    project <a href="http://www.vici.marianklamer.org/">“Reconstructing
+    the past through languages of the present: the Lesser Sunda
+    Islands”</a> at Leiden University.
+</p>
+
+<h3>Data Provenance</h3>
+The data represented in LexiRumah is taken from published sources attributed explicitly or from survey work
+executed in the following projects:
+<ul>
+  <li>NWO Vici project <a
     href="http://www.vici.marianklamer.org/">“Reconstructing the past
-    through languages of the present: the Lesser Sunda Islands”</a> at
-    Leiden University.</p>
+    through languages of the present: the Lesser Sunda Islands”</a>, Leiden University 2015–2019
+  </li>
+  <li>…</li>
+</ul>
 
 <h3> How to cite LexiRumah</h3>
 <p>
   LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
   <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.)
-    <i>LexiRumah</i>.
-    Leiden: Leiden University Centre for Linguistics, 2017. Available online at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on ${date.today()}.
-    </%block>
+    <i>LexiRumah</i>.  Leiden: Leiden University Centre for
+    Linguistics, 2017. Available online
+    at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on
+    ${date.today()}.  </%block>
   </blockquote>
 </p>
 <p>
