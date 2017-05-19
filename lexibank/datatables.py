@@ -46,13 +46,6 @@ class MaybeLinkCol(LinkCol):
         return ''
 
 
-class RefsCol(Col):
-    __kw__ = dict(bSearchable=False, bSortable=False)
-
-    def format(self, item):
-        return linked_references(self.dt.req, item)
-
-
 class Counterparts(Values):
     def base_query(self, query):
         query = query.join(ValueSet).options(
@@ -103,25 +96,22 @@ class Counterparts(Values):
                     'family',
                     model_col=Family.name,
                     get_object=lambda i: i.valueset.language.family),
-                Col(self, 'variety', model_col=Counterpart.variety_name),
                 #Col(self, 'loan', model_col=Counterpart.loan),
-                RefsCol(self, 'source'),
             ]
         if self.language:
             return [
-                LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
                     'concept',
                     model_col=Concept.name,
                     get_object=lambda i: i.valueset.parameter),
-                Col(self, 'variety', model_col=Counterpart.variety_name),
+                LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
                     'provider',
                     model_col=Contribution.name,
                     get_object=lambda i: i.valueset.contribution),
-                RefsCol(self, 'source'),
+                #Col(self, 'loan', model_col=Counterpart.loan),
             ]
         return [
             LinkCol(self, 'form', model_col=Value.name),
@@ -176,7 +166,7 @@ class LexibankLanguages(Languages):
             Col(self,
                 'longitude',
                 sDescription='<small>The geographic longitude</small>'),
-            MacroareaCol(self, 'macroarea', LexibankLanguage),
+            MacroareaCol(self, 'region', LexibankLanguage),
             FamilyLinkCol(self, 'family', LexibankLanguage),
         ]
 
@@ -203,8 +193,8 @@ class Providers(Contributions):
     def col_defs(self):
         return [
             IdCol(self, 'id'),
-            LinkCol(self, 'name'),
-            Col(self, 'cite', model_col=Contribution.description),
+            LinkCol(self, 'reference'),
+            Col(self, 'description', model_col=Contribution.description),
             Col(self, 'language_count', sTitle='# languages', model_col=Provider.language_count),
             Col(self, 'parameter_count', sTitle='# concepts', model_col=Provider.parameter_count),
             Col(self,
