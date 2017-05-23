@@ -55,7 +55,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings)
-    config.include('clldmpg')
+    config.include('clldlucl')
     config.include('clld_glottologfamily_plugin')
     config.registry.registerUtility(MyMapMarker(), IMapMarker)
     config.registry.registerUtility(LexibankCtxFactoryQuery(), ICtxFactoryQuery)
