@@ -30,11 +30,13 @@
 The data represented in LexiRumah is taken from published sources attributed explicitly or from survey work
 executed in the following projects:
 <ul>
-  <li>NWO Vici project <a
+  <li>NWO-VICI project <a
     href="http://www.vici.marianklamer.org/">“Reconstructing the past
-    through languages of the present: the Lesser Sunda Islands”</a>, Leiden University 2015–2019
+    through languages of the present: the Lesser Sunda Islands”</a>, Leiden University 2014–2019
   </li>
-  <li>…</li>
+  <li>The European Science Foundation EuroBABEL Project “Alor-Pantar languages: Origins and theoretical impact”,
+  Leiden University, University of Fairbanks, Alaska, US and University of Surrey, United Kingdom, 2009–2013</li>
+  <li>NWO-VIDI project “Linguistic Variation in Eastern Indonesia”, Leiden University 2002–2007</li>
 </ul>
 
 <h3> How to cite LexiRumah</h3>
