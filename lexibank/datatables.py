@@ -200,7 +200,7 @@ class Providers(Contributions):
         return [
             IdCol(self, 'id'),
             LinkCol(self, 'reference'),
-            Col(self, 'description', model_col=Contribution.description),
+            #Col(self, 'description', model_col=Contribution.description),
             Col(self, 'language_count', sTitle='# languages', model_col=Provider.language_count),
             Col(self, 'parameter_count', sTitle='# concepts', model_col=Provider.parameter_count),
             Col(self,

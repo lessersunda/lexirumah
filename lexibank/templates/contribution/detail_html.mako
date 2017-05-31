@@ -5,13 +5,15 @@
 <h2>${_('Contribution')} ${ctx.name}</h2>
 
 <p>
-${ctx.description}
+${ctx.description | n}
 </p>
 
 <small>cite as</small>
+% for source in ctx.all_sources:
 <blockquote>
-    ${ctx.jsondata['sources']}
+    ${source}
 </blockquote>
+% endfor
 % if ctx.url:
     <p>Available online at ${h.external_link(ctx.url)}</p>
 % endif
