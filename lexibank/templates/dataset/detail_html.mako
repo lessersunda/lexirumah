@@ -6,7 +6,7 @@
     <img src="${request.static_url('lexibank:static/logo.png')}"/>
 
     <%util:well title="LexiRumah">
-        <a href="${req.resource_url(req.dataset)}" style="font-family: monospace">lessersunda.ullet.nl/lexirumah</a>
+        <a href="${req.resource_url(req.dataset)}">${req.resource_url(req.dataset)}</a>
         serves the latest
         ${h.external_link('https://github.com/Anaphory/lexirumah-data/releases', label='released version')}
         of data curated at
