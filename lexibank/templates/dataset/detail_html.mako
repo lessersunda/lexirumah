@@ -54,7 +54,7 @@ executed in the following projects:
   collector) that you are taking information from. Every item in the
   database is linked to its reference, please cite them accordingly
   as, for example
-  <blockquote>LINKED_REFERENCE_OBJECT. In: ${cite_us()}</blockquote>
+  <blockquote><a href="${request.route_url('contribution', id=example_reference.id)}">${list(example_reference.all_sources)[0]}</a> In: ${cite_us()}</blockquote>
 </p>
                             
 

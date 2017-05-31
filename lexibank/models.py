@@ -40,9 +40,31 @@ class Provider(CustomModelMixin, Contribution):
     synonym_index = Column(
         Float,
         default=0.0,
-        doc="""A measure how often a dataset provides multiple synonyms for
-a concept in a language. 1 means for each concept in each language at most one counterpart
-is given.""")
+        doc="""A measure how often a dataset provides multiple synonyms for a
+concept in a language. 1 means for each concept in each language at
+most one counterpart is given.""")
+
+    @property
+    def all_sources(self):
+        "All sources (from jsondata) formatted as bibliographic references."
+        for source in self.jsondata['sources']:
+            if type(source) == str:
+                yield source
+            elif type(source) == dict:
+                try:
+                    # Assume it's field notes
+                    source.setdefault(
+                        "authors",
+                        " & ".join(
+                            ["{:}, {:}.".format(X.split()[1], X.split()[0][0])
+                             for X in source.get("recorders", ["N N."])]))
+                    yield (
+                        "{authors:} ({date:}): Field notes from {location:}."
+                        .format(**source))
+                except KeyError:
+                    yield str(source)
+            else:
+                yield str(source)
 
 
 @implementer(interfaces.IParameter)
