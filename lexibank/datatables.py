@@ -91,11 +91,7 @@ class Counterparts(Values):
                     'language',
                     model_col=LexibankLanguage.name,
                     get_object=lambda i: i.valueset.language),
-                MaybeLinkCol(
-                    self,
-                    'family',
-                    model_col=Family.name,
-                    get_object=lambda i: i.valueset.language.family),
+                FamilyLinkCol(self, 'family', LexibankLanguage),
                 MacroareaCol(self, 'region', LexibankLanguage, get_object=lambda i: i.valueset.language),
                 LinkCol(
                     self,
@@ -103,6 +99,7 @@ class Counterparts(Values):
                     model_col=Contribution.name,
                     get_object=lambda i: i.valueset.contribution),
                #Col(self, 'loan', model_col=Counterpart.loan),
+            LinkCol(self, 'comment', model_col=Value.comment),
             ]
         if self.language:
             return [
@@ -118,6 +115,7 @@ class Counterparts(Values):
                     model_col=Contribution.name,
                     get_object=lambda i: i.valueset.contribution),
                 #Col(self, 'loan', model_col=Counterpart.loan),
+            LinkCol(self, 'comment', model_col=Value.comment),
             ]
         return [
             LinkCol(self, 'form', model_col=Value.name),
@@ -132,6 +130,7 @@ class Counterparts(Values):
                 'concept',
                 model_col=Parameter.name,
                 get_object=lambda i: i.valueset.parameter),
+            LinkCol(self, 'comment', model_col=Value.comment),
         ]
 
 

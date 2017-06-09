@@ -112,6 +112,7 @@ class Counterpart(CustomModelMixin, Value):
     loan = Column(Boolean, default=False)
     variety_name = Column(Unicode)
     context = Column(Unicode)
+    comment = Column(Unicode)
 
     @property
     def external_url(self):
