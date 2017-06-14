@@ -6,8 +6,10 @@ from itertools import chain
 from sqlalchemy.orm import joinedload, joinedload_all
 from clld.db.meta import DBSession
 from clld.db.models.common import Value, ValueSet
-from clld.interfaces import IParameter
+from clld.interfaces import IParameter, IValue
 from clld.web.adapters.base import Representation
+from clld.web.adapters.excel import Values, QUERY_LIMIT
+from clld.lib.excel import hyperlink
 
 from lexibank.models import LexibankLanguage
 
@@ -67,5 +69,27 @@ class Colexifications(Representation):
         return {'pairs': pairs, 'values': values, 'families': distinct_families}
 
 
+class ByConcept(Values):
+
+    """Represent table of Value instances as excel sheet (maximal %d rows)."""
+
+    __doc__ %= QUERY_LIMIT
+
+    def header(self, ctx, req):
+        return ['ID', 'Language', 'Concept', 'Form', 'Reference', 'Comment']
+
+    def row(self, ctx, req, item):
+        res = super(Values, self).row(ctx, req, item)
+        res.insert(1, hyperlink(req.resource_url(item.valueset.parameter),
+                                item.valueset.parameter.__unicode__()))
+        res.insert(2, hyperlink(req.resource_url(item.valueset.language),
+                                item.valueset.language.__unicode__()))
+        res.append(hyperlink(req.resource_url(item.valueset.contribution),
+                                item.valueset.contribution.__unicode__()))
+        res.append(item.comment)
+        return res
+
+
 def includeme(config):
     config.register_adapter(Colexifications, IParameter)
+    config.register_adapter(ByConcept, IValue)
