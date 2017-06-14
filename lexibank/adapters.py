@@ -69,7 +69,7 @@ class Colexifications(Representation):
         return {'pairs': pairs, 'values': values, 'families': distinct_families}
 
 
-class ByConcept(Values):
+class ValuesXLS(Values):
 
     """Represent table of Value instances as excel sheet (maximal %d rows)."""
 
@@ -92,4 +92,4 @@ class ByConcept(Values):
 
 def includeme(config):
     config.register_adapter(Colexifications, IParameter)
-    config.register_adapter(ByConcept, IValue)
+    config.register_adapter(ValuesXLS, IValue)
