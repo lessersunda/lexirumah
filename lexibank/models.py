@@ -53,16 +53,12 @@ most one counterpart is given.""")
             elif type(source) == dict:
                 try:
                     # Assume it's field notes
-                    source.setdefault(
-                        "authors",
-                        " & ".join(
-                            ["{:}, {:}.".format(X.split()[1], X.split()[0][0])
-                             for X in source.get("recorders", ["N N."])]))
                     yield (
-                        "{authors:} ({date:}): Field notes from {location:}."
+                        "{authors:} ({year:}): Field notes on {languages:}."
                         .format(**source))
                 except KeyError:
-                    yield str(source)
+                    yield self.name
+                    raise StopIteration
             else:
                 yield str(source)
 
