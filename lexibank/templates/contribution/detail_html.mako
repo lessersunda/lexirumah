@@ -14,11 +14,11 @@
     % elif isinstance(obj, str):
     ${obj}
     % elif hasattr(obj, '__iter__'):
-        <ul>
+        <ol>
         %for value in obj:
             <li> ${recursive_html(value) | n} </li>
         %endfor
-        </ul>
+        </ol>
     % else:
         ${obj}
     % endif
@@ -26,18 +26,24 @@
 
 <h2>${_('Contribution')} ${ctx.name}</h2>
 
+<div style="clear:right;" />
+<div class="well" style="float:right; max-width: 40%;">
+<h4>Metadata</h4>
+ ${recursive_html({key: value for key, value in ctx.jsondata.items() if key not in ['language_pks']})}
+</div>
+
 <p>
 ${ctx.description | n}
 </p>
 
- ${recursive_html({key: value for key, value in ctx.jsondata.items() if key not in ['language_pks']})}
-
 <small>cite as</small>
-% for source in ctx.all_sources:
 <blockquote>
-    ${source}
-</blockquote>
+<ul>
+% for source in ctx.all_sources:
+    <li>${source}</li>
 % endfor
+</ul>
+</blockquote>
 % if ctx.url:
     <p>Available online at ${h.external_link(ctx.url)}</p>
 % endif
