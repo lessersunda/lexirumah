@@ -1,6 +1,7 @@
 from clld.web.maps import Map, ParameterMap, LanguageMap, SelectedLanguagesMap
 from clld.web.adapters.geojson import get_lonlat
 
+
 class HighZoomParameterMap (ParameterMap):
     def get_options(self):
         return {'info_query': {'parameter': self.ctx.pk}, 'hash': True,
