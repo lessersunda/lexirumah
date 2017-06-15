@@ -47,7 +47,7 @@ most one counterpart is given.""")
     @property
     def all_sources(self):
         "All sources (from jsondata) formatted as bibliographic references."
-        for source in self.jsondata['sources']:
+        for source in self.jsondata.get('sources', [{}]):
             if type(source) == str:
                 yield source
             elif type(source) == dict:
