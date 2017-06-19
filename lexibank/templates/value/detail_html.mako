@@ -10,13 +10,13 @@
 <small>cite as</small>
 <blockquote>
 <ul>
-% for source in ctx.all_sources:
+% for source in ctx.valueset.contribution.all_sources:
     <li>${source}</li>
 % endfor
 </ul>
 </blockquote>
-% if ctx.url:
-    <p>Available online at ${h.external_link(ctx.url)}</p>
+% if ctx.valueset.contribution.url:
+    <p>Available online at ${h.external_link(ctx.valueset.contribution.url)}</p>
 % endif
     </div>
 </%def>
