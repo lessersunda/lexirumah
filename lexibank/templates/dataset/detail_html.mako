@@ -43,7 +43,11 @@ executed in the following projects:
 <p>
   LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
   <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.)
-    <i>LexiRumah</i>.  Leiden: Leiden University Centre for
+    <i>${request.dataset.name}
+    %if request.dataset.description:
+      – ${request.dataset.description}
+    %end if
+    </i>.  Leiden: Leiden University Centre for
     Linguistics, 2017. Available online
     at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on
     ${date.today()}.  </%block>
