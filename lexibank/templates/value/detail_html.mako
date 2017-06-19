@@ -88,7 +88,6 @@
                     % for cp in counterparts:
                         <li>
                             ${h.link(request, cp)}
-                            [${cp.variety_name}]
                         </li>
                     % endfor
                 </ul>
