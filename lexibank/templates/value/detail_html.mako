@@ -5,12 +5,19 @@
 
 <%def name="sidebar()">
     <div class="well">
-       <h3>Dataset</h3>
+       <h3>Reference</h3>
         <p>${h.link(request, ctx.valueset.contribution)}</p>
-        <small>cite as</small>
-        <blockquote>
-            ${ctx.valueset.contribution.description}
-       </blockquote>
+<small>cite as</small>
+<blockquote>
+<ul>
+% for source in ctx.all_sources:
+    <li>${source}</li>
+% endfor
+</ul>
+</blockquote>
+% if ctx.url:
+    <p>Available online at ${h.external_link(ctx.url)}</p>
+% endif
     </div>
 </%def>
 
@@ -23,10 +30,10 @@
 <table class="table table-nonfluid">
     <tr>
         <th>Language:</th>
-        <td>${h.link(request, ctx.valueset.language)} [${ctx.variety_name}]</td>
+        <td>${h.link(request, ctx.valueset.language)}</td>
     </tr>
     <tr>
-        <th>Parameter:</th>
+        <th>Concept:</th>
         <td>${h.link(request, ctx.valueset.parameter)}</td>
     </tr>
     % if ctx.references:
@@ -43,8 +50,14 @@
     % endif
     % if ctx.description:
         <tr>
-            <th>Comment:</th>
+            <th>Description:</th>
             <td>${ctx.description}</td>
+        </tr>
+    % endif
+    % if ctx.comment:
+        <tr>
+            <th>Notes:</th>
+            <td>${ctx.comment}</td>
         </tr>
     % endif
     % if ctx.cognatesets:
