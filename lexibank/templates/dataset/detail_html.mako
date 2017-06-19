@@ -8,9 +8,9 @@
     <%util:well title="LexiRumah">
         <a href="${req.resource_url(req.dataset)}">${req.resource_url(req.dataset)}</a>
         serves the latest
-        ${h.external_link('https://github.com/Anaphory/lexirumah-data/releases', label='released version')}
+        ${h.external_link('https://github.com/lessersunda/lexirumah-data/releases', label='released version')}
         of data curated at
-        ${h.external_link('https://github.com/Anaphory/lexirumah-data', label='github:Anaphory/lexirumah-data')}.
+        ${h.external_link('https://github.com/lessersunda/lexirumah-data', label='github:lessersunda/lexirumah-data')}.
     </%util:well>
 </%def>
 
