@@ -42,13 +42,14 @@ executed in the following projects:
 <h3> How to cite LexiRumah</h3>
 <p>
   LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
-  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.)
-    <i>${request.dataset.name}
+  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2017.
     %if request.dataset.description:
-      – ${request.dataset.description}
-    %end if
-    </i>.  Leiden: Leiden University Centre for
-    Linguistics, 2017. Available online
+    <i>${request.dataset.name} – ${request.dataset.description}</i>.
+    %else:
+    <i>${request.dataset.name}</i>.
+    %endif
+  Leiden: Leiden University Centre for
+    Linguistics. Available online
     at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on
     ${date.today()}.  </%block>
   </blockquote>
@@ -58,7 +59,7 @@ executed in the following projects:
   collector) that you are taking information from. Every item in the
   database is linked to its reference, please cite them accordingly
   as, for example
-  <blockquote>${list(example_reference.all_sources)[0]} In: ${cite_us()}</blockquote>
+  <blockquote>${list(example_reference.all_sources)[0]}. In: ${cite_us()}</blockquote>
 </p>
                             
 
