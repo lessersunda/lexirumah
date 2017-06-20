@@ -1,15 +1,16 @@
+<%! from datetime import date %>
 <%inherit file="../home_comp.mako"/>
 <%namespace name="util" file="../util.mako"/>
 
 <%def name="sidebar()">
-    <img src="${request.static_url('lexibank:static/glottobank_all.jpg')}"/>
+    <img src="${request.static_url('lexibank:static/logo.png')}"/>
 
     <%util:well title="LexiRumah">
-        <a href="${req.resource_url(req.dataset)}" style="font-family: monospace">lessersunda.ullet.nl/lexirumah</a>
+        <a href="${req.resource_url(req.dataset)}">${req.resource_url(req.dataset)}</a>
         serves the latest
-        ${h.external_link('https://github.com/Anaphory/lexirumah-data/releases', label='released version')}
+        ${h.external_link('https://github.com/lessersunda/lexirumah-data/releases', label='released version')}
         of data curated at
-        ${h.external_link('https://github.com/Anaphory/lexirumah-data', label='github:Anaphory/lexirumah-data')}.
+        ${h.external_link('https://github.com/lessersunda/lexirumah-data', label='github:lessersunda/lexirumah-data')}.
     </%util:well>
 </%def>
 
@@ -18,11 +19,49 @@
 <p class="lead"> LexiRumah (from <i>Lexicon</i> and Ind. <i>Rumah</i>
     = house) is an online database containing lexical data about
     languages of the Lesser Sunda islands. The database contains
-    mostly IPA-transcribed wordlist data taken from referenced sources
-    or collected by the NWO Vici project <a
+    transcribed wordlist data and was set up and is maintained by the
+    NWO Vici
+    project <a href="http://www.vici.marianklamer.org/">“Reconstructing
+    the past through languages of the present: the Lesser Sunda
+    Islands”</a> at Leiden University.
+</p>
+
+<h3>Data Provenance</h3>
+The data represented in LexiRumah is taken from published sources attributed explicitly or from survey work
+executed in the following projects:
+<ul>
+  <li>NWO-VICI project <a
     href="http://www.vici.marianklamer.org/">“Reconstructing the past
-    through languages of the present: the Lesser Sunda Islands”</a> at
-    Leiden University.</p>
+    through languages of the present: the Lesser Sunda Islands”</a>, Leiden University 2014–2019
+  </li>
+  <li>The European Science Foundation EuroBABEL Project “Alor-Pantar languages: Origins and theoretical impact”,
+  Leiden University, University of Fairbanks, Alaska, US and University of Surrey, United Kingdom, 2009–2013</li>
+  <li>NWO-VIDI project “Linguistic Variation in Eastern Indonesia”, Leiden University 2002–2007</li>
+</ul>
+
+<h3> How to cite LexiRumah</h3>
+<p>
+  LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
+  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2017.
+    %if request.dataset.description:
+    <i>${request.dataset.name} – ${request.dataset.description}</i>.
+    %else:
+    <i>${request.dataset.name}</i>.
+    %endif
+  Leiden: Leiden University Centre for
+    Linguistics. Available online
+    at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on
+    ${date.today()}.  </%block>
+  </blockquote>
+</p>
+<p>
+  It is important to cite the specific reference (printed source, data
+  collector) that you are taking information from. Every item in the
+  database is linked to its reference, please cite them accordingly
+  as, for example
+  <blockquote>${list(example_reference.all_sources)[0]}. In: ${cite_us()}</blockquote>
+</p>
+                            
 
     <table class="table table-nonfluid">
         <tbody>

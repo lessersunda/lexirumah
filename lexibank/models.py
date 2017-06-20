@@ -48,6 +48,24 @@ class Provider(CustomModelMixin, Contribution):
 concept in a language. 1 means for each concept in each language at
 most one counterpart is given.""")
 
+    @property
+    def all_sources(self):
+        "All sources (from jsondata) formatted as bibliographic references."
+        for source in self.jsondata.get('sources', [{}]):
+            if type(source) == str:
+                yield source
+            elif type(source) == dict:
+                try:
+                    # Assume it's field notes
+                    yield (
+                        "{authors:} ({year:}): Field notes on {languages:}."
+                        .format(**source))
+                except KeyError:
+                    yield self.name
+                    raise StopIteration
+            else:
+                yield str(source)
+
 
 @implementer(interfaces.IParameter)
 class Concept(CustomModelMixin, Parameter):
@@ -58,7 +76,8 @@ class Concept(CustomModelMixin, Parameter):
 
     @property
     def concepticon_url(self):
-        return 'http://concepticon.clld.org/parameters/{0}'.format(self.concepticon_id)
+        return 'http://concepticon.clld.org/parameters/{0}'.format(
+            self.concepticon_id)
 
 
 @implementer(interfaces.ILanguage)
@@ -90,6 +109,7 @@ class Counterpart(CustomModelMixin, Value):
     loan = Column(Boolean, default=False)
     variety_name = Column(Unicode)
     context = Column(Unicode)
+    comment = Column(Unicode)
 
     @property
     def external_url(self):

@@ -11,7 +11,7 @@ from clld.db.models.common import Language, Value, ValueSet
 from clld.web.util.htmllib import HTML
 from clld.web.maps import SelectedLanguagesMap
 
-from lexibank.models import LexibankLanguage
+from lexibank.models import LexibankLanguage, Provider
 from lexibank.maps import HighZoomSelectedLanguagesMap
 
 
@@ -49,8 +49,10 @@ def dataset_detail_html(context=None, request=None, **kw):
         .join(LexibankLanguage)\
         .group_by(Family.id, Family.name)\
         .order_by(desc(text('c')))
+    example_reference = DBSession.query(Provider).first()
 
     return dict(
         families=families,
+        example_reference=example_reference,
         stats=context.get_stats([rsc for rsc in RESOURCES if rsc.name in [
             'language', 'family', 'cognateset', 'contribution', 'value', 'parameter']]))

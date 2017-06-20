@@ -2,21 +2,51 @@
 <%namespace name="util" file="../util.mako"/>
 <%! active_menu_item = "contributions" %>
 
-<h2>${_('Contribution')} ${ctx.name}</h2>
+<%def name="recursive_html(obj)">
+    % if isinstance(obj, dict):
+    <ul>
+        % for key, value in obj.items():
+        <li>${key}:
+        ${recursive_html(value) | n}
+        </li>
+        % endfor
+    </ul>
+    % elif isinstance(obj, str):
+    ${obj}
+    % elif hasattr(obj, '__iter__'):
+        <ol>
+        %for value in obj:
+            <li> ${recursive_html(value) | n} </li>
+        %endfor
+        </ol>
+    % else:
+        ${obj}
+    % endif
+</%def>
 
+<div class="well" style="float:right; max-width: 40%; clear:both;">
+<h4>Metadata</h4>
+ ${recursive_html({key: value for key, value in ctx.jsondata.items() if key not in ['language_pks']})}
+</div>
+
+<h2>${_('Contribution')} ${ctx.name}</h2>
 <p>
-${ctx.description}
+${ctx.description | n}
 </p>
 
 <small>cite as</small>
 <blockquote>
-    ${ctx.jsondata['sources']}
+<ul>
+% for source in ctx.all_sources:
+    <li>${source}</li>
+% endfor
+</ul>
 </blockquote>
 % if ctx.url:
     <p>Available online at ${h.external_link(ctx.url)}</p>
 % endif
 
-<table class="table table-nonfluid">
+<table class="table table-nonfluid" style="clear:none;">
     <tr>
         <td>Concepts</td>
         <td class="right">${ctx.parameter_count}</td>
@@ -33,7 +63,7 @@ ${ctx.description}
     </tr>
 </table>
 
-<h3>Languages</h3>
+<h3 style="clear:both;">Languages</h3>
 
 ${map.render()}
 
