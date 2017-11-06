@@ -9,7 +9,7 @@ from clld.db.models.common import Language, Value, ValueSet
 from clld.web.util.htmllib import HTML
 from clld.web.maps import SelectedLanguagesMap
 
-from lexibank.models import LexibankLanguage, Provider
+from lexibank.models import LexibankLanguage, Provider, Counterpart
 from lexibank.maps import HighZoomSelectedLanguagesMap
 
 
@@ -31,6 +31,14 @@ def value_detail_html(context=None, request=None, **kw):
         .filter(ValueSet.language_pk == context.valueset.language_pk)\
         .options(joinedload(Value.valueset).joinedload(ValueSet.contribution))\
         .order_by(ValueSet.contribution_pk)
+
+    colexifications = DBSession.query(Value)\
+                      .join(Counterpart)\
+                      .join(ValueSet)\
+                      .filter(Counterpart.pk != context.pk)\
+                      .filter(Counterpart.segments == context.segments)\
+                      .filter(ValueSet.language_pk == context.valueset.language_pk)
+
     return {'synonyms': [(c, list(cps)) for c, cps in
                          groupby(syns, key=lambda v: v.valueset.contribution)]}
 
@@ -53,4 +61,4 @@ def dataset_detail_html(context=None, request=None, **kw):
         families=families,
         example_reference=example_reference,
         stats=context.get_stats([rsc for rsc in RESOURCES if rsc.name in [
-            'language', 'family', 'cognateset', 'contribution', 'value', 'parameter']]))
+            'language', 'family', 'cognateset', 'source', 'value', 'parameter']]))

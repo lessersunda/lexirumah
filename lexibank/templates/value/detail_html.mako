@@ -1,47 +1,53 @@
 <%inherit file="../${context.get('request').registry.settings.get('clld.app_template', 'app.mako')}"/>
 <%namespace name="util" file="../util.mako"/>
 <%! active_menu_item = "contributions" %>
-<%block name="title">${_('Value')} ${ctx.name}</%block>
+<%block name="title">
+  ${ctx.valueset.language}:
+  [ ${ctx.segments} ]
+  ‘${ctx.valueset.parameter}’
+</%block>
+
+<%block name="head">
+    <script src="${request.static_url('lexibank:static/alignment.js')}"></script>
+    <link rel="stylesheet" href="${request.static_url('lexibank:static/alignment.css')}" type="text/css"/>
+    <script>
+        $( document ).ready(function() {
+            var alignments = document.getElementsByClassName("alignment");
+            for (var i=0,alignment; alignment=alignments[i]; i++) {
+                alignment.innerHTML = plotWord(alignment.innerHTML, 'span');
+            }
+        });
+    </script>
+</%block>
+
 
 <%def name="sidebar()">
+% if ctx.references:
     <div class="well">
-       <h3>Reference</h3>
-        <p>${h.link(request, ctx.valueset.contribution)}</p>
-<small>cite as</small>
-<blockquote>
-<ul>
-% for source in ctx.valueset.contribution.all_sources:
-    <li>${source}</li>
-% endfor
-</ul>
-</blockquote>
-% if ctx.valueset.contribution.url:
-    <p>Available online at ${h.external_link(ctx.valueset.contribution.url)}</p>
-% endif
+      <h3>References</h3>
+      <p>
+        ${h.linked_references(request, ctx)}
+      </p>
+      <p>
+        From the dataset ${h.link(request, ctx.valueset.contribution)}
+      </p>
     </div>
+% endif
 </%def>
 
-<h2>${_('Value')} ${ctx.name}</h2>
+<h2>&lt;${ctx.name}&gt;</h2>
+
+<p style="font-size:150%">
+  ${h.link(request, ctx.valueset.language)}:
+  <span class="alignment">[ ${ctx.segments} ]</span>
+  ‘${h.link(request, ctx.valueset.parameter)}’
+</p>
 
 % if ctx.external_url:
     <p>${h.external_link(ctx.external_url)}</p>
 % endif
 
 <table class="table table-nonfluid">
-    <tr>
-        <th>Language:</th>
-        <td>${h.link(request, ctx.valueset.language)}</td>
-    </tr>
-    <tr>
-        <th>Concept:</th>
-        <td>${h.link(request, ctx.valueset.parameter)}</td>
-    </tr>
-    % if ctx.references:
-        <tr>
-            <th>Source:</th>
-            <td>${h.linked_references(request, ctx)}</td>
-        </tr>
-    % endif
     % if ctx.context:
         <tr>
             <th>Context:</th>
@@ -61,7 +67,6 @@
         </tr>
     % endif
     % if ctx.cognatesets:
-    <!--
         <tr>
             <th>Cognatesets:</th>
             <td>
@@ -74,24 +79,33 @@
                 </ul>
             </td>
         </tr>
-    -->
     % endif
-</table>
-
-% if synonyms:
-    <h3>Synonyms</h3>
-    <dl>
-        % for prov, counterparts in synonyms:
-            <dt>${h.link(request, prov)}</dt>
-            <dd>
-                <ul>
-                    % for cp in counterparts:
+    % if synonyms:
+    <tr>
+      <th>Synonyms:</th>
+    <td>
+      <ul>
+        % for cp in synonyms:
                         <li>
                             ${h.link(request, cp)}
                         </li>
                     % endfor
                 </ul>
-            </dd>
-        % endfor
-    </dl>
+    </td>
+    </tr>
 % endif
+    % if colexifications:
+    <tr>
+      <th>Colexifications:</th>
+      <td>
+        <ul>
+          % for cp in colexifications:
+          <li>
+            ${h.link(request, cp, label=cp.valueset.parameter)}
+          </li>
+          % endfor
+        </ul>
+      </td>
+    </tr>
+    % endif
+</table>
