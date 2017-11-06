@@ -11,7 +11,7 @@ from clld.db.models.common import Language, Value, ValueSet
 from clld.web.util.htmllib import HTML
 from clld.web.maps import SelectedLanguagesMap
 
-from lexibank.models import LexibankLanguage, Provider
+from lexibank.models import LexibankLanguage, Provider, Counterpart
 from lexibank.maps import HighZoomSelectedLanguagesMap
 
 
@@ -27,14 +27,21 @@ def concepticon_link(request, concept):
 
 def value_detail_html(context=None, request=None, **kw):
     syns = DBSession.query(Value)\
-        .join(ValueSet) \
-        .filter(Value.pk != context.pk)\
-        .filter(ValueSet.parameter_pk == context.valueset.parameter_pk)\
-        .filter(ValueSet.language_pk == context.valueset.language_pk)\
-        .options(joinedload_all(Value.valueset, ValueSet.contribution))\
-        .order_by(ValueSet.contribution_pk)
-    return {'synonyms': [(c, list(cps)) for c, cps in
-                         groupby(syns, key=lambda v: v.valueset.contribution)]}
+                    .join(ValueSet)\
+                    .filter(Value.pk != context.pk)\
+                    .filter(ValueSet.parameter_pk == context.valueset.parameter_pk)\
+                    .filter(ValueSet.language_pk == context.valueset.language_pk)
+
+    colexifications = DBSession.query(Value)\
+                      .join(Counterpart)\
+                      .join(ValueSet)\
+                      .filter(Counterpart.pk != context.pk)\
+                      .filter(Counterpart.segments == context.segments)\
+                      .filter(ValueSet.language_pk == context.valueset.language_pk)
+
+    return {'synonyms': list(syns),
+            'colexifications': list(colexifications),
+    }
 
 
 def contribution_detail_html(context=None, request=None, **kw):
@@ -55,4 +62,4 @@ def dataset_detail_html(context=None, request=None, **kw):
         families=families,
         example_reference=example_reference,
         stats=context.get_stats([rsc for rsc in RESOURCES if rsc.name in [
-            'language', 'family', 'cognateset', 'contribution', 'value', 'parameter']]))
+            'language', 'family', 'cognateset', 'source', 'value', 'parameter']]))

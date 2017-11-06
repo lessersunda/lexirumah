@@ -5,8 +5,8 @@ from sqlalchemy.orm import joinedload, joinedload_all
 
 from clld.db.meta import DBSession
 from clld.db.util import get_distinct_values
-from clld.db.models.common import Value, Contribution, ValueSet, Parameter, Language
-from clld.web.util.helpers import external_link, linked_references
+from clld.db.models.common import Value, Contribution, ValueSet, Parameter, Language, Source
+from clld.web.util.helpers import external_link, linked_references, link
 
 from clld.web.datatables.base import Col, IdCol, LinkCol, LinkToMapCol, DataTable
 from clld.web.datatables.language import Languages
@@ -24,6 +24,29 @@ from .models import (
 )
 
 
+class ProviderCol(LinkCol):
+    def __init__(self, dt, name='reference', **kw):
+        kw.setdefault('model_col', Provider.name)
+        kw.setdefault('get_object', lambda i: i.provider)
+        kw['choices'] = [(p.id, p.name) for p in DBSession.query(Provider)]
+        LinkCol.__init__(self, dt, name, **kw)
+
+    def search(self, qs):
+        return Contribution.id == qs
+
+
+class SourcesCol(LinkCol):
+    def format(self, item):
+        links = []
+        for it in self.get_obj(item):
+            try:
+                links.append(
+                    link(self.dt.req, it, **self.get_attrs(it)))
+            except AssertionError:
+                links.append(it)
+        return '; '.join(links)
+
+
 class LexibankSources(Sources):
     def base_query(self, query):
         query = Sources.base_query(self, query)
@@ -32,24 +55,17 @@ class LexibankSources(Sources):
 
     def col_defs(self):
         cols = Sources.col_defs(self)
-        provider = LinkCol(
-            self,
-            'reference',
-            choices=get_distinct_values(Provider.name),
-            model_col=Provider.name,
-            get_object=lambda i: i.provider)
-        return cols[:-1] + [provider]
+        return cols # + [ProviderCol()]
 
 
-class MaybeLinkCol(LinkCol):
-    def format(self, item):
-        obj = self.get_obj(item)
-        if obj:
-            return LinkCol.format(self, item)
-        return ''
+def get_counterpart_references(counterpart):
+    for i in counterpart.references:
+        yield i.source
 
 
 class Counterparts(Values):
+    __constraints__ = [Parameter, Contribution, Language, Source]
+
     def base_query(self, query):
         query = query.join(ValueSet).options(
             joinedload(Value.valueset),
@@ -77,6 +93,11 @@ class Counterparts(Values):
             query = query.join(ValueSet.parameter)
             return query.filter(ValueSet.contribution_pk == self.contribution.pk)
 
+        if self.source:
+            query = query.filter(self.source.pk == CounterpartReference.source_pk)
+            query = query.filter(CounterpartReference.counterpart_pk == Value.pk)
+            return query
+
         return query \
             .join(ValueSet.parameter)\
             .join(ValueSet.language)\
@@ -96,13 +117,18 @@ class Counterparts(Values):
                     get_object=lambda i: i.valueset.language),
                 FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
                 MacroareaCol(self, 'region', LexibankLanguage, get_object=lambda i: i.valueset.language),
-                LinkCol(
+#                 LinkCol(
+#                     self,
+#                     'reference',
+#                     model_col=Contribution.name,
+#                     get_object=lambda i: i.valueset.contribution),
+#                 Col(self, 'loan', model_col=Counterpart.loan),
+                SourcesCol(
                     self,
-                    'reference',
-                    model_col=Contribution.name,
-                    get_object=lambda i: i.valueset.contribution),
-               #Col(self, 'loan', model_col=Counterpart.loan),
-            Col(self, 'comment', model_col=Counterpart.comment),
+                    'sources',
+                    model_col=LexibankSource.name,
+                    get_object=get_counterpart_references),
+                Col(self, 'comment', model_col=Counterpart.comment),
             ]
         if self.language:
             return [
@@ -112,29 +138,60 @@ class Counterparts(Values):
                     model_col=Concept.name,
                     get_object=lambda i: i.valueset.parameter),
                 LinkCol(self, 'form', model_col=Counterpart.name),
+#                 Col(self, 'loan', model_col=Counterpart.loan),
+                SourcesCol(
+                    self,
+                    'sources',
+                    model_col=LexibankSource.name,
+                    get_object=get_counterpart_references),
+                Col(self, 'comment', model_col=Counterpart.comment),
+            ]
+        if self.source:
+            return [
                 LinkCol(
                     self,
-                    'reference',
-                    model_col=Contribution.name,
-                    get_object=lambda i: i.valueset.contribution),
-                #Col(self, 'loan', model_col=Counterpart.loan),
-            Col(self, 'comment', model_col=Counterpart.comment),
+                    'concept',
+                    model_col=Concept.name,
+                    get_object=lambda i: i.valueset.parameter),
+                LinkCol(self, 'form', model_col=Counterpart.name),
+                LinkCol(
+                    self,
+                    'language',
+                    model_col=LexibankLanguage.name,
+                    get_object=lambda i: i.valueset.language),
+#                 LinkCol(
+#                     self,
+#                     'reference',
+#                     model_col=Contribution.name,
+#                     get_object=lambda i: i.valueset.contribution),
+#                 Col(self, 'loan', model_col=Counterpart.loan),
+                Col(self, 'comment', model_col=Counterpart.comment),
             ]
         return [
-            LinkCol(self, 'form', model_col=Counterpart.name),
-            Col(self, 'context', model_col=Counterpart.context),
-            LinkCol(
-                self,
-                'language',
-                model_col=Language.name,
-                get_object=lambda i: i.valueset.language),
-            LinkCol(
-                self,
-                'concept',
-                model_col=Parameter.name,
-                get_object=lambda i: i.valueset.parameter),
-            Col(self, 'comment', model_col=Counterpart.comment),
-        ]
+                LinkCol(
+                    self,
+                    'concept',
+                    model_col=Concept.name,
+                    get_object=lambda i: i.valueset.parameter),
+                LinkCol(self, 'form', model_col=Counterpart.name),
+                LinkCol(
+                    self,
+                    'language',
+                    model_col=LexibankLanguage.name,
+                    get_object=lambda i: i.valueset.language),
+#                 LinkCol(
+#                     self,
+#                     'reference',
+#                     model_col=Contribution.name,
+#                     get_object=lambda i: i.valueset.contribution),
+#                 Col(self, 'loan', model_col=Counterpart.loan),
+                SourcesCol(
+                    self,
+                    'sources',
+                    model_col=LexibankSource.name,
+                    get_object=get_counterpart_references),
+                Col(self, 'comment', model_col=Counterpart.comment),
+            ]
 
 
 #class FeatureIdCol(IdCol):
@@ -183,13 +240,15 @@ class ConcepticonLink(Col):
     __kw__ = {'bSearchable': False, 'bSortable': False}
 
     def format(self, item):
-        return external_link(item.concepticon_url)
+        if item.concepticon_url:
+            return external_link(item.concepticon_url)
+        else:
+            return ''
 
 
 class Concepts(Parameters):
     def col_defs(self):
         return [
-            IdCol(self, 'id'),
             LinkCol(self, 'name', sTitle='Concept'),
             Col(self, 'Languages', model_col=Concept.representation),
             Col(self, 'semantic_field', model_col=Concept.semanticfield, choices=get_distinct_values(Concept.semanticfield)),
@@ -218,15 +277,9 @@ class Providers(Contributions):
         ]
 
 
-class ProviderCol(LinkCol):
-    def __init__(self, dt, name, **kw):
-        kw['model_col'] = Contribution.name
-        kw['choices'] = [(p.id, p.name) for p in DBSession.query(Provider)]
-        LinkCol.__init__(self, dt, name, **kw)
-
-    def search(self, qs):
-        return Contribution.id == qs
-
+def get_cognateset_references(cognateset):
+    for i in cognateset.references:
+        yield i.source
 
 class Cognatesets(DataTable):
     def base_query(self, query):
@@ -238,10 +291,10 @@ class Cognatesets(DataTable):
             IdCol(self, 'id'),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
-            ProviderCol(
-                self,
-                'reference',
-                get_object=lambda i: i.contribution),
+#             ProviderCol(
+#                 self,
+#                 'reference',
+#                 get_object=lambda i: i.contribution),
         ]
 
 

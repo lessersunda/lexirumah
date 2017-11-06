@@ -8,8 +8,7 @@ from clld.db.models.common import ValueSet
 from clld.scripts.util import Data
 from clld.lib.bibtex import EntryType, FIELDS
 from clldutils.dsv import reader
-from pycldf.dataset import Dataset
-from pycldf.util import MD_SUFFIX
+from pycldf.dataset import Dataset, MD_SUFFIX
 
 from lexibank.models import (
     LexibankLanguage, Concept, Counterpart, Provider, CounterpartReference,

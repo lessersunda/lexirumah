@@ -31,7 +31,7 @@
 
 <h2>${_('Contribution')} ${ctx.name}</h2>
 <p>
-${ctx.description | n}
+ ${ctx.description | n}
 </p>
 
 <small>cite as</small>

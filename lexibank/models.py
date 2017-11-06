@@ -76,8 +76,11 @@ class Concept(CustomModelMixin, Parameter):
 
     @property
     def concepticon_url(self):
-        return 'http://concepticon.clld.org/parameters/{0}'.format(
-            self.concepticon_id)
+        if self.concepticon_id:
+            return 'http://concepticon.clld.org/parameters/{0}'.format(
+                self.concepticon_id)
+        else:
+            return ''
 
 
 @implementer(interfaces.ILanguage)
@@ -94,13 +97,18 @@ class LexibankSource(CustomModelMixin, Source):
 
 
 @implementer(ICognateset)
-class Cognateset(Base):
+class Cognateset(Base, HasSourceMixin):
     id = Column(String, default=uuid, unique=True)
     name = Column(Unicode)
     type = Column(Unicode)  # automatic, ...
     contribution_pk = Column(Integer, ForeignKey('contribution.pk'))
     contribution = relationship(Contribution, backref='cognatesets')
     representation = Column(Integer)
+
+
+class CognatesetReference(Base, HasSourceMixin):
+    cognateset_pk = Column(Integer, ForeignKey('cognateset.pk'))
+    cognateset = relationship(Cognateset, backref="references")
 
 
 @implementer(interfaces.IValue)
@@ -110,6 +118,7 @@ class Counterpart(CustomModelMixin, Value):
     variety_name = Column(Unicode)
     context = Column(Unicode)
     comment = Column(Unicode)
+    segments = Column(Unicode)
 
     @property
     def external_url(self):

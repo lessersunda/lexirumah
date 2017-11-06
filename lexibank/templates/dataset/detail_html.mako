@@ -66,11 +66,6 @@ executed in the following projects:
     <table class="table table-nonfluid">
         <tbody>
             <tr>
-                <th><a href="${request.route_url('contributions')}">Datasets</a></th>
-                <td class="right">${'{:,}'.format(stats['contribution'])}</td>
-                <td></td>
-            </tr>
-            <tr>
                 <th>Lexical items</th>
                 <td class="right">${'{:,}'.format(stats['value'])}</td>
                 <td></td>
@@ -78,6 +73,11 @@ executed in the following projects:
             <tr>
                 <th><a href="${request.route_url('parameters')}">Concepts</a></th>
                 <td class="right">${'{:,}'.format(stats['parameter'])}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th><a href="${request.route_url('sources')}">Sources</a></th>
+                <td class="right">${'{:,}'.format(stats['source'])}</td>
                 <td></td>
             </tr>
             <tr>
