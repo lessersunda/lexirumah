@@ -247,7 +247,8 @@ class Concepts(Parameters):
     def col_defs(self):
         return [
             LinkCol(self, 'name', sTitle='Concept'),
-            Col(self, 'Languages', model_col=Concept.representation),
+            Col(self, 'indonesian'),
+            Col(self, 'languages', model_col=Concept.representation),
             Col(self, 'semantic_field', model_col=Concept.semanticfield, choices=get_distinct_values(Concept.semanticfield)),
             ConcepticonLink(self, 'Concepticon'),
         ]
