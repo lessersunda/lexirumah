@@ -35,14 +35,14 @@ From dataset ${h.link(request, ctx.contribution)}
         <th>loan</th>
     </%def>
     <td>${h.link(request, item.counterpart)}</td>
-    <td>${h.link(request, item.counterpart.valueset.language)} [${item.counterpart.variety_name}]</td>
+    <td>${h.link(request, item.counterpart.valueset.language)}</td>
     <td>${h.link(request, item.counterpart.valueset.parameter)}</td>
     <td>${'no' if item.doubt else 'yes'}</td>
     <td>
         <span class="alignment">${item.alignment}</span>
     </td>
     <td>
-        <span>${item.alignment_method}</span>
+        <span>${item.alignment_method or "Unknown"}</span>
     </td>
     <td>${'yes' if item.counterpart.loan else 'no'}</td>
 </%util:table>

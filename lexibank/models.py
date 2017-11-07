@@ -71,8 +71,14 @@ most one counterpart is given.""")
 class Concept(CustomModelMixin, Parameter):
     pk = Column(Integer, ForeignKey('parameter.pk'), primary_key=True)
     representation = Column(Integer)
+    """How represented is this concept in the languages? That is, for how many languages is this concept given?"""
+    # english = Column(Unicode) # Already used as `name`
+    indonesian = Column(Unicode)
     semanticfield = Column(Unicode)
+    elicitationnotes = Column(Unicode)
+    origin = Column(Unicode)
     concepticon_id = Column(Integer)
+    comment = Column(Boolean)
 
     @property
     def concepticon_url(self):
