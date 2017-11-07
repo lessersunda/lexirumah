@@ -208,6 +208,26 @@ class LanguageIdCol(LinkCol):
         return dict(label=item.id)
 
 
+class GlottologLinkCol(Col):
+    __kw__ = {'bSearchable': False, 'bSortable': False}
+
+    def format(self, item):
+        if item.glottolog_url:
+            return external_link(item.glottolog_url, label=item.glottocode)
+        else:
+            return ''
+
+
+class EthnologueLinkCol(Col):
+    __kw__ = {'bSearchable': False, 'bSortable': False}
+
+    def format(self, item):
+        if item.ethnologue_url:
+            return external_link(item.ethnologue_url, label=item.iso_code)
+        else:
+            return ''
+
+
 class LexibankLanguages(Languages):
     __constraints__ = [Contribution]
 
@@ -233,6 +253,8 @@ class LexibankLanguages(Languages):
                 sDescription='<small>The geographic longitude</small>'),
             MacroareaCol(self, 'region', LexibankLanguage),
             FamilyLinkCol(self, 'family', LexibankLanguage),
+            GlottologLinkCol(self, 'Glottolog'),
+            EthnologueLinkCol(self, 'Ethnologue'),
         ]
 
 
