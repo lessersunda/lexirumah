@@ -78,7 +78,7 @@ class Concept(CustomModelMixin, Parameter):
     elicitationnotes = Column(Unicode)
     origin = Column(Unicode)
     concepticon_id = Column(Integer)
-    comment = Column(Boolean)
+    comment = Column(Unicode)
 
     @property
     def concepticon_url(self):
@@ -89,6 +89,25 @@ class Concept(CustomModelMixin, Parameter):
 class LexibankLanguage(CustomModelMixin, Language, HasFamilyMixin):
     pk = Column(Integer, ForeignKey('language.pk'), primary_key=True)
     level = Column(Unicode)
+    culture = Column(Unicode)
+    comment = Column(Unicode)
+
+    @property
+    def ethnologue_url(self):
+        if self.iso_code:
+            return 'http://www-01.sil.org/iso639-3/documentation.asp?id={0}'.format(
+                self.iso_code)
+        else:
+            return ''
+
+    @property
+    def glottolog_url(self):
+        if self.glottocode:
+            return 'http://glottolog.org/resource/languoid/id/{0}'.format(
+                self.glottocode)
+        else:
+            return ''
+
 
 
 @implementer(interfaces.ISource)
