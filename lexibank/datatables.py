@@ -44,6 +44,8 @@ class SourcesCol(LinkCol):
         return '; '.join(links)
 
 
+from clld.web.datatables.base import DataTable, Col, LinkCol, DetailsRowLinkCol
+from clld.web.datatables.source import TypeCol
 class LexibankSources(Sources):
     def base_query(self, query):
         query = Sources.base_query(self, query)
@@ -51,9 +53,14 @@ class LexibankSources(Sources):
         return query
 
     def col_defs(self):
-        cols = Sources.col_defs(self)
-        return cols # + [ProviderCol()]
-
+        return [
+            DetailsRowLinkCol(self, 'd'),
+            LinkCol(self, 'name'),
+            Col(self, 'author'),
+            Col(self, 'year'),
+            Col(self, 'title'),
+            TypeCol(self, 'bibtex_type'),
+        ]
 
 def get_counterpart_references(counterpart):
     for i in counterpart.references:
