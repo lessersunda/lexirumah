@@ -12,7 +12,7 @@
             % for value in valueset.values:
             <li>
                 ${h.map_marker_img(request, value)}
-                ${h.link(request, valueset, label=value.__unicode__())}
+                ${h.link(request, value)}
                 ${h.format_frequency(request, value)}
             </li>
             % endfor
