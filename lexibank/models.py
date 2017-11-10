@@ -88,6 +88,7 @@ class Concept(CustomModelMixin, Parameter):
 @implementer(interfaces.ILanguage)
 class LexibankLanguage(CustomModelMixin, Language, HasFamilyMixin):
     pk = Column(Integer, ForeignKey('language.pk'), primary_key=True)
+    region = Column(Unicode)
     level = Column(Unicode)
     culture = Column(Unicode)
     comment = Column(Unicode)

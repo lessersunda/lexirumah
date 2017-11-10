@@ -255,7 +255,7 @@ class LexibankLanguages(Languages):
             Col(self,
                 'longitude',
                 sDescription='<small>The geographic longitude</small>'),
-            MacroareaCol(self, 'region', LexibankLanguage),
+            Col(self, 'region', model_col=LexibankLanguage.region),
             FamilyLinkCol(self, 'family', LexibankLanguage),
             GlottologLinkCol(self, 'Glottolog'),
             EthnologueLinkCol(self, 'Ethnologue'),
