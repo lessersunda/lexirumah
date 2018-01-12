@@ -33,7 +33,7 @@ ${ctx.coins(request)|n}
               by ${bibrec['collector']}
               % endif
               % if bibrec.get('assistant'):
-              with ${bibrec['assistant']}
+              with ${bibrec['assistant'].split('–')[0]}
               % endif
               % if bibrec.get('date'):
               on ${bibrec['date']}
