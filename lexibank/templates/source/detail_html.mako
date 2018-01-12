@@ -9,8 +9,11 @@ ${ctx.coins(request)|n}
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab1" data-toggle="tab">Text</a></li>
         <li><a href="#tab2" data-toggle="tab">BibTeX</a></li>
+        <!--
+            Conversion to RIS needs the external xml2ris tool, conversion to MODS is not supported at all
         <li><a href="#tab3" data-toggle="tab">RIS</a></li>
         <li><a href="#tab4" data-toggle="tab">MODS</a></li>
+        -->
     </ul>
     <div class="tab-content">
         <% bibrec = ctx.bibtex() %>
@@ -19,6 +22,54 @@ ${ctx.coins(request)|n}
             % if ctx.datadict().get('Additional_information'):
             <p>
                 ${ctx.datadict().get('Additional_information')}
+            </p>
+            % endif
+            <!-- We store fieldnotes as `misc` with non-standard fields. -->
+            % if str(bibrec.genre) == 'misc' and (bibrec.get('collector') or bibrec.get('date') or (bibrec.get('latitude') and bibrec.get('longitude')) or bibrec.get('speaker') or bibrec.get('location')):
+            <p style="font-size:90%">
+              Field Notes collected
+              % if bibrec.get('collector') or bibrec.get('assistant') or bibrec.get('date') or bibrec.get('location') or bibrec.get('latitude') and bibrec.get('longitude'):
+              % if bibrec.get('collector'):
+              by ${bibrec['collector']}
+              % endif
+              % if bibrec.get('assistant'):
+              with ${bibrec['assistant']}
+              % endif
+              % if bibrec.get('date'):
+              on ${bibrec['date']}
+              % endif
+              % if bibrec.get('location') or (bibrec.get('latitude') and bibrec.get('longitude')):
+              for the language spoken at
+              % if bibrec.get('location'):
+              ${bibrec['location']}
+              % endif
+              % if bibrec.get('latitude') and bibrec.get('longitude'):
+              (${bibrec['latitude']}, ${bibrec['longitude']})
+              % endif
+              % endif
+              .
+              % endif
+              % if bibrec.get('date_of_transcription') or bibrec.get('transcribed_by'):
+              Transcribed
+              % if bibrec.get('date_of_transcription'):
+              ${bibrec['date_of_transcription']}
+              % endif
+              % if bibrec.get('transcribed_by'):
+              by ${bibrec['transcribed_by']}
+              % endif
+              .
+              % endif
+              % if bibrec.get('speaker'):
+              % if len(bibrec['speaker'].split('&')) == 1:
+              Speaker: ${bibrec['speaker'].split('–')[0]}
+              % else:
+              Speakers:
+              % for speaker in bibrec['speaker'].split('&')[:-1]:
+              ${speaker.split('–')[0]} and
+              % endfor
+              bibrec['speaker'].split('&')[-1]
+              % endif
+              % endif
             </p>
             % endif
             % if bibrec.get('url'):
