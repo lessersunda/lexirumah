@@ -44,5 +44,5 @@ From dataset ${h.link(request, ctx.contribution)}
     <td>
         <span>${item.alignment_method or "Unknown"}</span>
     </td>
-    <td>${'yes' if item.counterpart.loan else 'no'}</td>
+    <td>${["borrowing status unknown", "clearly borrowed", "probably borrowed", "perhaps borrowed", "very little evidence for borrowing", "no evidence for borrowing"][item.counterpart.loan]}</td>
 </%util:table>

@@ -140,7 +140,7 @@ class CognatesetReference(Base, HasSourceMixin):
 @implementer(interfaces.IValue)
 class Counterpart(CustomModelMixin, Value):
     pk = Column(Integer, ForeignKey('value.pk'), primary_key=True)
-    loan = Column(Boolean, default=False)
+    loan = Column(Integer, default=0)
     variety_name = Column(Unicode)
     context = Column(Unicode)
     comment = Column(Unicode)

@@ -7,8 +7,8 @@ from clld.web.app import CtxFactoryQuery
 from clld.db.models.common import Contribution, ValueSet, Value
 
 # we must make sure custom models are known at database initialization!
-from lexibank import models
-from lexibank.interfaces import ICognateset
+from . import models
+from .interfaces import ICognateset
 
 
 _ = lambda s: s
