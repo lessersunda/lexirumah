@@ -116,7 +116,7 @@ class Counterparts(Values):
                 LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
-                    'language',
+                    'lect',
                     model_col=LexibankLanguage.name,
                     get_object=lambda i: i.valueset.language),
                 FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
@@ -160,7 +160,7 @@ class Counterparts(Values):
                 LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
-                    'language',
+                    'lect',
                     model_col=LexibankLanguage.name,
                     get_object=lambda i: i.valueset.language),
 #                 LinkCol(
@@ -180,7 +180,7 @@ class Counterparts(Values):
                 LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
-                    'language',
+                    'lect',
                     model_col=LexibankLanguage.name,
                     get_object=lambda i: i.valueset.language),
 #                 LinkCol(
@@ -277,7 +277,9 @@ class Concepts(Parameters):
         return [
             LinkCol(self, 'name', sTitle='Concept'),
             Col(self, 'indonesian'),
-            Col(self, 'languages', model_col=Concept.representation),
+            Col(self, '# lects', model_col=Concept.representation,
+                bSearchable=False,
+                sDescription='<small>The number of languages where this concept is given</small>'),
             Col(self, 'semantic_field', model_col=Concept.semanticfield, choices=get_distinct_values(Concept.semanticfield)),
             ConcepticonLink(self, 'Concepticon'),
         ]
@@ -289,7 +291,7 @@ class Providers(Contributions):
             IdCol(self, 'id'),
             LinkCol(self, 'reference'),
             #Col(self, 'description', model_col=Contribution.description),
-            Col(self, 'language_count', sTitle='# languages', model_col=Provider.language_count),
+            Col(self, 'language_count', sTitle='# lects', model_col=Provider.language_count),
             Col(self, 'parameter_count', sTitle='# concepts', model_col=Provider.parameter_count),
             Col(self,
                 'lexeme_count',
