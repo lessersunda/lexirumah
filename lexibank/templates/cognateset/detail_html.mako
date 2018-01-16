@@ -17,12 +17,6 @@
 
 <h2>${_('Cognate set')} ${ctx.id}</h2>
 
-From dataset ${h.link(request, ctx.contribution)}
-<small>cite as</small>
-<blockquote>
-    ${ctx.contribution.description}
-</blockquote>
-
 <h3>${len(ctx.counterparts)} Counterparts</h3>
 <%util:table items="${ctx.counterparts}" args="item" options="${dict(bInfo=True)}">
     <%def name="head()">
