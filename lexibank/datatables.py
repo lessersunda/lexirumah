@@ -276,7 +276,9 @@ class Concepts(Parameters):
     def col_defs(self):
         return [
             LinkCol(self, 'name', sTitle='Concept'),
-            Col(self, 'indonesian'),
+            Col(self, 'indonesian',
+                model_col=Concept.indonesian,
+                bSearchable=True),
             Col(self, '# lects', model_col=Concept.representation,
                 bSearchable=False,
                 sDescription='<small>The number of languages where this concept is given</small>'),
