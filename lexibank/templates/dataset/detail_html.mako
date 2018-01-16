@@ -59,7 +59,7 @@ executed in the following projects:
   collector) that you are taking information from. Every item in the
   database is linked to its reference, please cite them accordingly
   as, for example
-  <blockquote>${list(example_reference.all_sources)[0]}. In: ${cite_us()}</blockquote>
+  <blockquote>${h.link(request, example_reference)}. In: ${cite_us()}</blockquote>
 </p>
                             
 
