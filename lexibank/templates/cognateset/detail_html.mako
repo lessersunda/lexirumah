@@ -30,9 +30,9 @@ From dataset ${h.link(request, ctx.contribution)}
         <th>Language</th>
         <th>Concept</th>
         <th>certain</th>
-        <th>alignment</th>
-        <th>alignment method</th>
-        <th>loan</th>
+        <th>Alignment</th>
+        <th>Sources</th>
+        <th>Loan status</th>
     </%def>
     <td>${h.link(request, item.counterpart)}</td>
     <td>${h.link(request, item.counterpart.valueset.language)}</td>
@@ -42,7 +42,9 @@ From dataset ${h.link(request, ctx.contribution)}
         <span class="alignment">${item.alignment}</span>
     </td>
     <td>
-        <span>${item.alignment_method or "Unknown"}</span>
+    % for reference in item.sources:
+        <span>${h.link(request, reference.source)}</span>
+    % endfor
     </td>
     <td>${["borrowing status unknown", "clearly borrowed", "probably borrowed", "perhaps borrowed", "very little evidence for borrowing", "no evidence for borrowing"][item.counterpart.loan]}</td>
 </%util:table>

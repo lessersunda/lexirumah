@@ -150,11 +150,17 @@ class CognatesetCounterpart(Base):
     counterpart_pk = Column(Integer, ForeignKey('counterpart.pk'))
     counterpart = relationship(Counterpart, backref='cognatesets')
     doubt = Column(Boolean, default=False)
-    cognate_detection_method = Column(Unicode)
     alignment = Column(Unicode)
-    alignment_method = Column(Unicode)
+
+
+class CognatesetCounterpartReference(Base, HasSourceMixin):
+    cognatesetcounterpart_pk = Column(Integer,
+                                      ForeignKey('cognatesetcounterpart.pk'))
+    cognatesetcounterpart = relationship(CognatesetCounterpart,
+                                         backref='sources')
 
 
 class CounterpartReference(Base, HasSourceMixin):
     counterpart_pk = Column(Integer, ForeignKey('counterpart.pk'))
     counterpart = relationship(Counterpart, backref="references")
+
