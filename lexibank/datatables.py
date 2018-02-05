@@ -120,7 +120,7 @@ class Counterparts(Values):
                     model_col=LexibankLanguage.name,
                     get_object=lambda i: i.valueset.language),
                 FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
-                MacroareaCol(self, 'region', LexibankLanguage, get_object=lambda i: i.valueset.language),
+                Col(self, 'region', model_col=LexibankLanguage.region),
 #                 LinkCol(
 #                     self,
 #                     'reference',
