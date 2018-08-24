@@ -1,4 +1,4 @@
-### The anatomy of a Lexibank dataset
+# The anatomy of a Lexibank dataset
 
 A Lexibank dataset conists of the following directories and files:
 
