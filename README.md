@@ -37,7 +37,15 @@ Lexibank datasets should be versioned using a version control system. If possibl
 be hosted in a way that allows ["installation" of the dataset using pip](https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support). If a dataset is curated in a repository on GitHub, it may be forked into the [lexibank organisation](https://github.com/lexibank) (see below) as a way of "official" endorsement and to increase its visibility.
 
 If a dataset is under version control, releases should be made using the appropriate functionality of the version
-control software to make sure they can be retrieved in a controlled way via installation. Release tags (a.k.a. version numbers) **should** follow [semantic versioning](https://semver.org/) principles, i.e. be of the form `vMAJOR.MINOR.PATCH`. 
+control software to make sure they can be retrieved in a controlled way via installation. Release tags (a.k.a. version numbers) **should** follow [semantic versioning](https://semver.org/) principles, i.e. be of the form `vMAJOR.MINOR.PATCH` with the following semantics:
+- The `MAJOR` version is incremented for backwards-incompatible changes, e.g. removal of columns in any tables, or re-destribution of IDs.
+- The `MINOR` version is incremented for compatible changes, e.g. additional languages or concepts.
+- The `PATCH` version is incremented for bug-fixes, e.g. fixed typos or errata in data.
+
+When this versioning scheme, users of a dataset
+- should always start out with the latest `MAJOR` version of the dataset,
+- should always update their analyses to use the latest `PATCH` for the chosen `MINOR` version,
+- should be safe (in terms of their processing pipeline, **not** in terms of the results) to upgrade to the latest `MINOR` version within the chosen `MAJOR` version.
 
 In addition (and also when a dataset is not curated via vcs) releases **must** be deposited on ZENODO for longterm archiving and public accessibility via DOI. Published datasets on ZENODO **should** be submitted to the 
 [lexibank community](https://zenodo.org/communities/lexibank). If a dataset is derived from a source dataset, attribution to this source **must** be given in the release description.
