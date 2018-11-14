@@ -58,6 +58,7 @@ In addition (and also when a dataset is not curated via vcs) releases **must** b
   git tag -a "clics-2.0"
   git push origin --tags
   ```
+- Almost always lexibank datasets refer to specific versions of Glottolog and Concepticon data, as indicated in [cldf-metadata.json](https://github.com/lexibank/bowernpny/blob/12e6d222593028696f871e409bb5b1175daad627/cldf/cldf-metadata.json#L16-L23). Care should be taken to only refer to released versions of these repositories for released versions of the dataset.
 
 
 ## The Lexibank workflow and `pylexibank`
