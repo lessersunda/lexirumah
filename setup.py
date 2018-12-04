@@ -21,7 +21,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'clld>=8',
-        'clldlucl>=2.0.0',
+        'clldlucl',
         'clld-glottologfamily-plugin>=2.0.1',
         'pycldf',
         'sqlalchemy',
