@@ -134,6 +134,8 @@ class Counterpart(CustomModelMixin, Value):
     variety_name = Column(Unicode)
     context = Column(Unicode)
     comment = Column(Unicode)
+    segments = Column(Unicode)
+    orthographic_form = Column(Unicode)
 
     @property
     def external_url(self):
@@ -162,4 +164,5 @@ class CognatesetCounterpartReference(Base, HasSourceMixin):
 class CounterpartReference(Base, HasSourceMixin):
     counterpart_pk = Column(Integer, ForeignKey('counterpart.pk'))
     counterpart = relationship(Counterpart, backref="references")
+    form_given_as = Column(Unicode)
 
