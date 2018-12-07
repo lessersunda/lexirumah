@@ -126,7 +126,7 @@ class Counterparts(Values):
                 self,
                 'form (IPA)',
                 model_col=Counterpart.name),
-            LinkCol(
+            Col(
                 self,
                 'orthography',
                 model_col=Counterpart.orthographic_form),
@@ -137,7 +137,11 @@ class Counterparts(Values):
                 'sources',
                 model_col=LexibankSource.name,
                 get_object=get_counterpart_references),
-            Col(self, 'given as', model_col=CounterpartReference.form_given_as)
+            Col(
+                self,
+                'sources',
+                model_col=CounterpartReference.form_given_as,
+                get_object=lambda i: i.references[0] if i.references else None),
         ]
         if self.source:
             del template[4]
