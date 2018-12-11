@@ -142,7 +142,7 @@ class Counterparts(Values):
                 get_object=get_counterpart_references),
             Col(
                 self,
-                'sources',
+                'given as',
                 model_col=CounterpartReference.form_given_as,
                 get_object=lambda i: i.references[0] if i.references else None),
         ]
