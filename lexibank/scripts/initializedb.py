@@ -81,8 +81,9 @@ def prime_cache(args):
     for cogset in DBSession.query(Cognateset) \
             .options(joinedload_all(
                 Cognateset.counterparts,
-                CognatesetCounterpart.counterpart,
-                common.Value.valueset)):
+                #CognatesetCounterpart.counterpart,
+                #common.Value.valueset
+            )):
         concepts = set()
         for cp in cogset.counterparts:
             concepts.add(cp.counterpart.valueset.parameter_pk)

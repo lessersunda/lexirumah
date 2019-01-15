@@ -21,7 +21,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'clld>=3.1.0',
-        'clldlucl>=2.0.0',
+        'clldlucl',
         'clld-glottologfamily-plugin>=1.3.4',
         'pycldf',
     ],

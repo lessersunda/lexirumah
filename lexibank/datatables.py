@@ -114,8 +114,48 @@ class Counterparts(Values):
             )
 
     def col_defs(self):
+        template = [
+            LinkCol(
+                self,
+                'lect',
+                model_col=LexibankLanguage.name,
+                get_object=lambda i: i.valueset.language),
+            LinkCol(
+                self,
+                'concept',
+                model_col=Concept.name,
+                get_object=lambda i: i.valueset.parameter),
+            LinkCol(
+                self,
+                'form (IPA)',
+                model_col=Counterpart.name),
+            Col(
+                self,
+                'orthography',
+                model_col=Counterpart.orthographic_form),
+            # Col(self, 'loan', model_col=Counterpart.loan),
+            Col(self, 'comment', model_col=Counterpart.comment),
+            SourcesCol(
+                self,
+                'sources',
+                model_col=LexibankSource.name,
+                get_object=get_counterpart_references),
+            Col(
+                self,
+                'given as',
+                model_col=CounterpartReference.form_given_as,
+                get_object=lambda i: i.references[0] if i.references else None),
+        ]
+        if self.source:
+            del template[4]
         if self.parameter:
-            return [
+            del template[1]
+        if self.language:
+            del template[0]
+        return template
+
+
+        return [
                 LinkCol(self, 'form', model_col=Counterpart.name),
                 LinkCol(
                     self,
@@ -123,7 +163,7 @@ class Counterparts(Values):
                     model_col=LexibankLanguage.name,
                     get_object=lambda i: i.valueset.language),
                 FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
-                MacroareaCol(self, 'region', LexibankLanguage, get_object=lambda i: i.valueset.language),
+                Col(self, 'region', model_col=LexibankLanguage.region),
 #                 LinkCol(
 #                     self,
 #                     'reference',
@@ -172,31 +212,6 @@ class Counterparts(Values):
 #                     model_col=Contribution.name,
 #                     get_object=lambda i: i.valueset.contribution),
 #                 Col(self, 'loan', model_col=Counterpart.loan),
-                Col(self, 'comment', model_col=Counterpart.comment),
-            ]
-        return [
-                LinkCol(
-                    self,
-                    'concept',
-                    model_col=Concept.name,
-                    get_object=lambda i: i.valueset.parameter),
-                LinkCol(self, 'form', model_col=Counterpart.name),
-                LinkCol(
-                    self,
-                    'lect',
-                    model_col=LexibankLanguage.name,
-                    get_object=lambda i: i.valueset.language),
-#                 LinkCol(
-#                     self,
-#                     'reference',
-#                     model_col=Contribution.name,
-#                     get_object=lambda i: i.valueset.contribution),
-#                 Col(self, 'loan', model_col=Counterpart.loan),
-                SourcesCol(
-                    self,
-                    'sources',
-                    model_col=LexibankSource.name,
-                    get_object=get_counterpart_references),
                 Col(self, 'comment', model_col=Counterpart.comment),
             ]
 
