@@ -42,7 +42,7 @@ executed in the following projects:
 <h3> How to cite LexiRumah</h3>
 <p>
   LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
-  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2017.
+  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2019.
     %if request.dataset.description:
     <i>${request.dataset.name} – ${request.dataset.description}</i>.
     %else:
