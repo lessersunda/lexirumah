@@ -11,4 +11,12 @@
             {"bitstreamid": "archive/v1.0.0.zip",
              "filesize": 15000000}],
         "oid": "lessersunda/lexirumah-data"
-    }}
+    },
+
+    "2.0.0": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.0.0.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    }
+}
