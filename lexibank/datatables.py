@@ -115,6 +115,7 @@ class Counterparts(Values):
 
     def col_defs(self):
         template = [
+            FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
             LinkCol(
                 self,
                 'lect',
@@ -147,11 +148,12 @@ class Counterparts(Values):
                 get_object=lambda i: i.references[0] if i.references else None),
         ]
         if self.source:
-            del template[4]
+            del template[5]
         if self.parameter:
-            del template[1]
+            del template[2]
         if self.language:
             del template[0]
+            del template[1]
         return template
 
 
