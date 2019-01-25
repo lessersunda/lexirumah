@@ -67,7 +67,7 @@ ${ctx.coins(request)|n}
               % for speaker in bibrec['speaker'].split('&')[:-1]:
               ${speaker.split('–')[0]} and
               % endfor
-              bibrec['speaker'].split('&')[-1]
+              ${bibrec['speaker'].split('&')[-1]}
               % endif
               % endif
             </p>
