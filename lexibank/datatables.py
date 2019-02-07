@@ -145,74 +145,13 @@ class Counterparts(Values):
                 get_object=lambda i: i.references[0] if i.references else None),
         ]
         if self.source:
-            del template[5]
+            del template[6]
         if self.parameter:
             del template[2]
         if self.language:
-            del template[0]
             del template[1]
+            del template[0]
         return template
-
-
-        return [
-                LinkCol(self, 'form', model_col=Counterpart.name),
-                LinkCol(
-                    self,
-                    'lect',
-                    model_col=LexibankLanguage.name,
-                    get_object=lambda i: i.valueset.language),
-                FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
-                Col(self, 'region', model_col=LexibankLanguage.region),
-#                 LinkCol(
-#                     self,
-#                     'reference',
-#                     model_col=Contribution.name,
-#                     get_object=lambda i: i.valueset.contribution),
-#                 Col(self, 'loan', model_col=Counterpart.loan),
-                SourcesCol(
-                    self,
-                    'sources',
-                    model_col=LexibankSource.name,
-                    get_object=get_counterpart_references),
-                Col(self, 'comment', model_col=Counterpart.comment),
-            ]
-        if self.language:
-            return [
-                LinkCol(
-                    self,
-                    'concept',
-                    model_col=Concept.name,
-                    get_object=lambda i: i.valueset.parameter),
-                LinkCol(self, 'form', model_col=Counterpart.name),
-#                 Col(self, 'loan', model_col=Counterpart.loan),
-                SourcesCol(
-                    self,
-                    'sources',
-                    model_col=LexibankSource.name,
-                    get_object=get_counterpart_references),
-                Col(self, 'comment', model_col=Counterpart.comment),
-            ]
-        if self.source:
-            return [
-                LinkCol(
-                    self,
-                    'concept',
-                    model_col=Concept.name,
-                    get_object=lambda i: i.valueset.parameter),
-                LinkCol(self, 'form', model_col=Counterpart.name),
-                LinkCol(
-                    self,
-                    'lect',
-                    model_col=LexibankLanguage.name,
-                    get_object=lambda i: i.valueset.language),
-#                 LinkCol(
-#                     self,
-#                     'reference',
-#                     model_col=Contribution.name,
-#                     get_object=lambda i: i.valueset.contribution),
-#                 Col(self, 'loan', model_col=Counterpart.loan),
-                Col(self, 'comment', model_col=Counterpart.comment),
-            ]
 
 
 #class FeatureIdCol(IdCol):
