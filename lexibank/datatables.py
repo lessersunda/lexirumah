@@ -70,6 +70,11 @@ def get_counterpart_references(counterpart):
         yield i.source
 
 
+class ItalicsCol(Col):
+    def format_value(self, value):
+        return "<i>{:}</i>".format(super().format_value(value))
+
+
 class Counterparts(Values):
     __constraints__ = [Parameter, Contribution, Language, Source]
 
@@ -130,7 +135,7 @@ class Counterparts(Values):
                 self,
                 'form (IPA)',
                 model_col=Counterpart.name),
-            Col(
+            ItalicsCol(
                 self,
                 'orthography',
                 model_col=Counterpart.orthographic_form),
