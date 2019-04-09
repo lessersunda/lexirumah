@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='lexirumah',
-    version='0.0',
-    description='lexirumah',
+    version='0.2',
+    description='lexibank clone for the LexiRumah webapp',
     long_description='',
     classifiers=[
         "Programming Language :: Python",
