@@ -16,10 +16,10 @@ from clldutils.jsonlib import load
 from pyglottolog.api import Glottolog
 from pyconcepticon.api import Concepticon
 
-import lexibank
-from lexibank.scripts.util import import_cldf
-from lexibank.models import (
-    LexibankLanguage, Concept, Provider, Counterpart, Cognateset, CognatesetCounterpart,
+import lexirumah
+from lexirumah.scripts.util import import_cldf
+from lexirumah.models import (
+    LexiRumahLanguage, Concept, Provider, Counterpart, Cognateset, CognatesetCounterpart,
 )
 
 
@@ -28,17 +28,17 @@ with_collkey_ddl()
 
 def main(args):
     Index('ducet', collkey(common.Value.name)).create(DBSession.bind)
-    repos = Path(os.path.expanduser('~')).joinpath('venvs/lexibank/lexibank-data')
+    repos = Path(os.path.expanduser('~')).joinpath('venvs/lexirumah/lexirumah-data')
 
     with transaction.manager:
         dataset = common.Dataset(
-            id=lexibank.__name__,
-            name="lexibank",
+            id=lexirumah.__name__,
+            name="lexirumah",
             publisher_name="Max Planck Institute for the Science of Human History",
             publisher_place="Jena",
             publisher_url="http://shh.mpg.de",
             license="http://creativecommons.org/licenses/by/4.0/",
-            domain='lexibank.clld.org',
+            domain='lexirumah.clld.org',
             contact='forkel@shh.mpg.de',
             jsondata={
                 'license_icon': 'cc-by.png',
@@ -46,10 +46,10 @@ def main(args):
         DBSession.add(dataset)
 
     glottolog = Glottolog(
-        Path(lexibank.__file__).parent.parent.parent.parent.joinpath('glottolog3', 'glottolog'))
+        Path(lexirumah.__file__).parent.parent.parent.parent.joinpath('glottolog3', 'glottolog'))
     languoids = {l.id: l for l in glottolog.languoids()}
     concepticon = Concepticon(
-        Path(lexibank.__file__).parent.parent.parent.parent.joinpath('concepticon', 'concepticon-data'))
+        Path(lexirumah.__file__).parent.parent.parent.parent.joinpath('concepticon', 'concepticon-data'))
     conceptsets = {c['ID']: c for c in concepticon.conceptsets()}
 
     for dname in repos.joinpath('datasets').iterdir():
@@ -66,7 +66,7 @@ def main(args):
     with transaction.manager:
         load_families(
             Data(),
-            DBSession.query(LexibankLanguage),
+            DBSession.query(LexiRumahLanguage),
             glottolog=languoids,
             isolates_icon='tcccccc')
 

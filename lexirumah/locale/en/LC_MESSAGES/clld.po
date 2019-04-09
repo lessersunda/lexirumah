@@ -1,11 +1,11 @@
-# English translations for lexibank.
+# English translations for lexirumah.
 # Copyright (C) 2015 ORGANIZATION
-# This file is distributed under the same license as the lexibank project.
+# This file is distributed under the same license as the lexirumah project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: lexibank 0.0\n"
+"Project-Id-Version: lexirumah 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-09-03 10:54+0200\n"
 "PO-Revision-Date: 2015-09-03 10:39+0200\n"
@@ -17,34 +17,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.0\n"
 
-#: lexibank/__init__.py:11
+#: lexirumah/__init__.py:11
 msgid "Parameter"
 msgstr "Concept"
 
-#: lexibank/__init__.py:12
+#: lexirumah/__init__.py:12
 msgid "Parameters"
 msgstr "Concepts"
 
-#: lexibank/__init__.py:13
+#: lexirumah/__init__.py:13
 msgid "Contribution"
 msgstr "Reference"
 
-#: lexibank/__init__.py:14
+#: lexirumah/__init__.py:14
 msgid "Contributions"
 msgstr "References"
 
-#: lexibank/__init__.py:15
+#: lexirumah/__init__.py:15
 msgid "Value"
 msgstr "Word"
 
-#: lexibank/__init__.py:16
+#: lexirumah/__init__.py:16
 msgid "Values"
 msgstr "Words"
 
-#: lexibank/__init__.py:17
+#: lexirumah/__init__.py:17
 msgid "Valueset"
 msgstr "Synonym set"
 
-#: lexibank/__init__.py:18
+#: lexirumah/__init__.py:18
 msgid "Valuesets"
 msgstr "Synonym sets"

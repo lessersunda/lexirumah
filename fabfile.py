@@ -1,2 +1,2 @@
 from clldfabric import tasks
-tasks.init('lexibank')
+tasks.init('lexirumah')

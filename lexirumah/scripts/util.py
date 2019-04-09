@@ -10,9 +10,9 @@ from clld.lib.bibtex import EntryType, FIELDS
 from clldutils.dsv import reader
 from pycldf.dataset import Dataset, MD_SUFFIX
 
-from lexibank.models import (
-    LexibankLanguage, Concept, Counterpart, Provider, CounterpartReference,
-    LexibankSource, Cognateset, CognatesetCounterpart,
+from lexirumah.models import (
+    LexiRumahLanguage, Concept, Counterpart, Provider, CounterpartReference,
+    LexiRumahSource, Cognateset, CognatesetCounterpart,
 )
 
 
@@ -27,7 +27,7 @@ def cldf2clld(source, contrib, id_):
     if source.get('year'):
         name += ' %s' % source['year']
     description = source.get('title')
-    return LexibankSource(
+    return LexiRumahSource(
         id=unique_id(contrib, id_),
         provider=contrib,
         bibtex_type=getattr(EntryType, source.genre, EntryType.misc),
@@ -39,7 +39,7 @@ def cldf2clld(source, contrib, id_):
 def import_dataset(ds, contrib, languoids, conceptsets, sources, values):
     data = Data()
     concepts = {p.id: p for p in DBSession.query(Concept)}
-    langs = {l.id: l for l in DBSession.query(LexibankLanguage)}
+    langs = {l.id: l for l in DBSession.query(LexiRumahLanguage)}
 
     for i, row in enumerate(ds.rows):
         if not row['Value'] or not row['Parameter_ID'] or not row['Language_ID']:
@@ -54,7 +54,7 @@ def import_dataset(ds, contrib, languoids, conceptsets, sources, values):
             languoid = languoids.get(lid)
             if not languoid:
                 continue
-            langs[lid] = language = LexibankLanguage(
+            langs[lid] = language = LexiRumahLanguage(
                 id=lid,
                 name=languoid.name,
                 level=text_type(languoid.level.name),

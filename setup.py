@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='lexibank',
-    version='0.0',
-    description='lexibank',
+    name='lexirumah',
+    version='0.2',
+    description='lexirumah clone for the LexiRumah webapp',
     long_description='',
     classifiers=[
         "Programming Language :: Python",
@@ -30,8 +30,8 @@ setup(
         'WebTest >= 1.3.1',  # py3 compat
         'mock',
     ],
-    test_suite="lexibank",
+    test_suite="lexirumah",
     entry_points="""\
 [paste.app_factory]
-main = lexibank:main
+main = lexirumah:main
 """)

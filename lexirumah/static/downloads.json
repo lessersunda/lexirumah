@@ -1,9 +1,9 @@
 {
     "0.20170619": {
         "bitstreams": [
-            {"bitstreamid": "Lexirumah-20170619-dataset.cldf.zip",
+            {"bitstreamid": "LexiRumah-20170619-dataset.cldf.zip",
              "filesize": 194800 }],
-        "oid": "lessersunda/lexirumah-data/releases/download/Lexirumah-20170619/"
+        "oid": "lessersunda/lexirumah-data/releases/download/LexiRumah-20170619/"
     },
 
     "1.0.0": {
