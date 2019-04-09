@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name='lexirumah',
     version='0.2',
-    description='lexirumah clone for the LexiRumah webapp',
+    description='lexibank clone for the LexiRumah webapp',
     long_description='',
     classifiers=[
         "Programming Language :: Python",
