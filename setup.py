@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='lexibank',
-    version='0.0',
-    description='lexibank',
+    name='lexirumah',
+    version='0.2',
+    description='lexibank clone for the LexiRumah webapp',
     long_description='',
     classifiers=[
         "Programming Language :: Python",
