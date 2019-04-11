@@ -26,6 +26,7 @@ setup(
         'pycldf',
         'sqlalchemy',
         'waitress',
+        'pyconcepticon',
     ],
     extras_require={
         'dev': [
