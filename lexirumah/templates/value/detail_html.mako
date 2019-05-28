@@ -26,7 +26,17 @@
     <div class="well">
       <h3>References</h3>
       <p>
-        ${h.linked_references(request, ctx)}
+      % if ctx.references:
+            Given in ${h.link(request, ctx.references[0].source)}
+            as <q>${ctx.references[0].form_given_as}</q>.
+      % endif
+      % if len(ctx.references) > 1:
+        Also given in
+        ${h.link(request, ctx.references[1].source)}<!--
+        % for ref in ctx.references[2:]:
+-->; ${h.link(request, ref.source)}
+        % endfor
+      % endif
       </p>
       <p>
         From the dataset ${h.link(request, ctx.valueset.contribution)}
@@ -35,12 +45,14 @@
 % endif
 </%def>
 
-<h2>&lt;${ctx.name}&gt;</h2>
+<h2>
+  ${h.link(request, ctx.valueset.language)}
+</h2>
 
 <p style="font-size:150%">
-  ${h.link(request, ctx.valueset.language)}:
-  <span class="alignment">[ ${ctx.segments} ]</span>
-  ‘${h.link(request, ctx.valueset.parameter)}’
+   <b>${ctx.orthographic_form}</b>
+   [${ctx.name}]
+   ‘${h.link(request, ctx.valueset.parameter)}’
 </p>
 
 % if ctx.external_url:
@@ -62,7 +74,7 @@
     % endif
     % if ctx.comment:
         <tr>
-            <th>Notes:</th>
+            <th>Notes about ${ctx.orthographic_form}:</th>
             <td>${ctx.comment}</td>
         </tr>
     % endif
@@ -80,32 +92,24 @@
             </td>
         </tr>
     % endif
-    % if synonyms:
-    <tr>
-      <th>Synonyms:</th>
-    <td>
-      <ul>
-        % for cp in synonyms:
-                        <li>
-                            ${h.link(request, cp)}
-                        </li>
-                    % endfor
-                </ul>
-    </td>
-    </tr>
-% endif
     % if colexifications:
     <tr>
-      <th>Colexifications:</th>
+      <th>it also means:</th>
       <td>
-        <ul>
           % for cp in colexifications:
-          <li>
-            ${h.link(request, cp, label=cp.valueset.parameter)}
-          </li>
+            ${h.link(request, cp, label=cp.valueset.parameter)} <br />
           % endfor
-        </ul>
       </td>
+    </tr>
+    % endif
+    % if synonyms:
+    <tr>
+      <th>Synonym${"s" if len(synonyms)>1 else ""}:</th>
+    <td>
+        % for cp in synonyms:
+          ${h.link(request, cp)} <br />
+        % endfor
+    </td>
     </tr>
     % endif
 </table>
