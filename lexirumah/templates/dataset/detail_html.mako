@@ -71,8 +71,12 @@
 </p>
 
 <h3>Data Provenance</h3>
-The data represented in LexiRumah is taken from published sources attributed explicitly or from survey work
-executed in the following projects:
+The data represented in LexiRumah comes from published sources,
+as well as from survey work.
+All data is attributed and linked to the source from which
+it comes. In addition to wordlists provided by individual
+linguists (as attributed), survey work from the following
+projects is also present in LexiRumah.
 <ul>
   <li>NWO-VICI project <a
     href="http://www.vici.marianklamer.org/">“Reconstructing the past
@@ -85,27 +89,68 @@ executed in the following projects:
 
 <h3> How to cite LexiRumah</h3>
 <p>
-  LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
+  LexiRumah is a separate publication it should be cited as:
   <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2019.
     %if request.dataset.description:
     <i>${request.dataset.name} – ${request.dataset.description}</i>.
     %else:
     <i>${request.dataset.name}</i>.
     %endif
-  Leiden: Leiden University Centre for
+    Leiden: Leiden University Centre for
     Linguistics. Available online
     at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on
     ${date.today()}.  </%block>
   </blockquote>
 </p>
+
 <p>
-  It is important to cite the specific reference (printed source, data
-  collector) that you are taking information from. Every item in the
-  database is linked to its reference, please cite them accordingly
-  as, for example
-  <blockquote>${h.link(request, example_reference)}. In: ${cite_us()}</blockquote>
+It is important to cite the specific reference (printed source, or data collector)
+that the data you cite comes from.
+Every item in the database is linked to its reference and should
+be cited accordingly.
+Thus, for instance if you wish to cite the Hewa (sika1262-hewa)
+word <i>taʔa</i> ‘betel vive’. You would do so as following:
+“The Hewa word for ‘betel vine’ is <i>taʔa</i> (Fricke 2014)”.
+With the following entry in your list of references:
+
+  <blockquote><%block name="Fricke">
+    Fricke, Hanna. 2014.
+    <i>Topics in the grammar of Hewa:
+    A variety of Sika in Eastern Flores, Indonesia.</i>.
+    München: Lincom Europa
+    </%block>
+  </blockquote>
 </p>
-                            
+
+<p>
+If you do not have access to the original source,
+as is often the case for survey word list data,
+it is still insufficient to cite only LexiRumah.
+Instead, cite the original source and LexiRumah in the following way:
+“The Iha word for ‘thorn’ [ˈᵑg͡bɛm] contains a voiced pre-nasalised
+co-articulated bilabial velar plosive (Donohue 2010 in Kaiping, Edwards and Klamer 2019)”
+
+Then in your reference list you will have one reference for
+LexiRumah and one for Donohue (2010).
+You may wish (or your publisher may require) you to treat this original
+source as being “in” LexiRumah, in which case you can
+treat it like a chapter in a book and cite it as follows:
+
+  <blockquote><%block name="Donohue">
+    Donohue, Mark. 2010.
+    Bomberai survey word lists.
+    in ${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2019.
+    %if request.dataset.description:
+    <i>${request.dataset.name} – ${request.dataset.description}</i>.
+    %else:
+    <i>${request.dataset.name}</i>.
+    %endif
+    Leiden: Leiden University Centre for
+    Linguistics. Available online
+    at <a href="">${req.resource_url(req.dataset)}</a>. Accessed on
+    ${date.today()}.  </%block>
+  </blockquote>
+</p>
 
     <table class="table table-nonfluid">
         <tbody>
