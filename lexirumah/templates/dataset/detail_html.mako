@@ -16,14 +16,58 @@
 
 <h2>Welcome to LexiRumah</h2>
 
-<p class="lead"> LexiRumah (from <i>Lexicon</i> and Ind. <i>Rumah</i>
-    = house) is an online database containing lexical data about
-    languages of the Lesser Sunda islands. The database contains
+<p class="lead"> LexiRumah (from <i>Lexicon</i> and Indonesian <i>Rumah</i>
+    = ‘house’) is an online database containing lexical data for languages
+    of Eastern Indonesian and Timor-Leste. The database contains
     transcribed wordlist data and was set up and is maintained by the
     NWO Vici
-    project <a href="http://www.vici.marianklamer.org/">“Reconstructing
+    project <a href="https://vici.marianklamer.org/">“Reconstructing
     the past through languages of the present: the Lesser Sunda
     Islands”</a> at Leiden University.
+</p>
+
+<h3>Presentation of Data</h3>
+<p>
+    Each word in LexiRumah belongs to a particular language and a particular concept.
+    In the case of data drawn from survey word-lists, the concept to which a word
+    matches was the prompt which elicited the word.
+    (In nearly all cases this prompt was given in Indonesian/Malay).
+    For data from published sources the concept to which a word matches
+    is that judged most similar to the gloss or definition given in the source.
+</p>
+
+<p>
+    Each word is associated with three different transcriptions.
+    Firstly, there is a standardised transcription (Form IPA) using the symbols of
+    the International Phonetic Alphabet which follows the conventions of the
+    CLTS (Cross-Linguistic Transcription System).
+    Depending on the nature of the source, and the level of knowledge of the language,
+    this transcription is either phonemic or phonetic,
+    bearing in mind the conventions of CLTS.
+    In addition, in nearly all cases a phonemic sequence of two identical vowels
+    is transcribed as a single long vowel (/VV/ → <Vː>) to aid cross-linguistic comparison.
+</p>
+
+<p>
+    Secondly, each word has an orthographic transcription (Orthography).
+    For languages which have an established orthography which is used
+    to some extent by speakers and/or linguists, this transcription
+    follows the conventions of the established orthography.
+    For languages which do not yet have any orthography this
+    transcription mostly follows the conventions of Indonesian.
+</p>
+ 
+<p>
+    Finally, the representation of the word in the original source
+    from which the word is derived is also given.
+</p>
+
+<p>
+    To take one simple example ilustrating all these transcriptions,
+    the Ili'uun (eray1237) word which matches the concept ‘hide’
+    was given in the original source as <ladjōk>.
+    This has been standardised to IPA /lad͡ʒoːk/ and is transcribed
+    orthographically <i>lajook</i> in rough accordance with Indonesian orthography.
 </p>
 
 <h3>Data Provenance</h3>
