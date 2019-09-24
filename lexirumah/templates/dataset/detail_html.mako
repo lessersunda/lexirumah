@@ -16,7 +16,7 @@
 
 <h2>Welcome to LexiRumah</h2>
 
-<p class="lead"> LexiRumah (from <i>Lexicon</i> and Ind. <i>Rumah</i>
+<p class="lead"> LexiRumah (from <i>Lexicon</i> and Indonesian <i>Rumah</i>
     = house) is an online database containing lexical data about
     languages of the Lesser Sunda islands. The database contains
     transcribed wordlist data and was set up and is maintained by the
