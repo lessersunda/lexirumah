@@ -47,7 +47,7 @@
     bearing in mind the conventions of CLTS. In addition,
     in nearly all cases a phonemic sequence of two identical vowels
     is transcribed as a single long vowel (/VV/ → &lt;Vː&gt;)
-    in order to ease of cross-linguistic comparison.
+    in order to ease cross-linguistic comparison.
 </p>
 
 <p>
@@ -90,8 +90,8 @@
 
 <h3> How to cite LexiRumah</h3>
 <p>
-  LexiRumah is a separate publication by ${request.dataset.formatted_editors()}. We recommend you cite it as
-  <blockquote><%block name="cite_us">${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2019.
+  LexiRumah is a separate publication by Gereon A. Kaiping, Owen Edwards, and Marian Klamer. We recommend you cite it as
+  <blockquote><%block name="cite_us">Kaiping, Gereon A., Owen Edwards, and Marian Klamer (eds.). 2019.
     %if request.dataset.description:
     <i>${request.dataset.name} – ${request.dataset.description}</i>.
     %else:
@@ -111,7 +111,7 @@
     and should be cited accordingly.
     Thus, for instance if you wish to cite the Hewa (sika1262-hewa)
     word <i>taʔa</i> ‘betel vive’. You would do so as following:
-    “The Hewa word for ‘betel vine’ is taʔa (Fricke 2014)”.
+    “The Hewa word for ‘betel vine’ is <i>taʔa</i> (Fricke 2014)”.
     With the following entry in your list of references:
 
   <blockquote>
@@ -126,7 +126,7 @@
     as is often the case for survey word-list data,
     it is still insufficient to cite only LexiRumah.
     Instead, cite the original source and LexiRumah in the following way:
-    “The Iha word for ‘thorn’ is [ˈᵑg͡bɛm] contains a voiced pre-nasalised
+    “The Iha word for ‘thorn’ [ˈᵑg͡bɛm] contains a voiced pre-nasalised
     co-articulated bilabial velar plosive (Donohue 2010 in Kaiping, Edwards and Klamer 2019)”
 </p>
 
@@ -142,7 +142,7 @@
     Donohue, Mark. 2010.
     Bomberai survey word lists.
     in
-    ${" & ".join([editor.contributor.last_first() for editor in request.dataset.editors if editor.primary])} (eds.). 2019.
+    Kaiping, Gereon A., Owen Edwards, and Marian Klamer (eds.). 2019.
     %if request.dataset.description:
     <i>${request.dataset.name} – ${request.dataset.description}</i>.
     %else:
