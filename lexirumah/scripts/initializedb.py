@@ -88,7 +88,7 @@ def prime_cache(args):
         concepts = set()
         for cp in cogset.counterparts:
             concepts.add(cp.counterpart.valueset.parameter_pk)
-        cogset.name = "<{:}> (‘{:}’)".format(
+        cogset.name = "[{:}] (‘{:}’)".format(
             cogset.name,
             '’/‘'.join(sorted([concept_labels[pk] for pk in concepts])))
         cogset.representation = len(cogset.counterparts)
