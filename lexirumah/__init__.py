@@ -27,7 +27,10 @@ class LexiRumahCtxFactoryQuery(CtxFactoryQuery):
         if model == Contribution:
             query = query.options(joinedload(Contribution.data))
         if model == models.Cognateset:
-            query = query.options(
+            query = query
+            # The joined load was problematic at some point. It might speed up some operations later, but leave it out for now.
+            # query = query.options(
+            (
                 joinedload_all(
                     models.Cognateset.counterparts,
                     models.CognatesetCounterpart.counterpart,
