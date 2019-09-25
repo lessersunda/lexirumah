@@ -46,7 +46,7 @@
     this transcription is either phonemic or phonetic,
     bearing in mind the conventions of CLTS. In addition,
     in nearly all cases a phonemic sequence of two identical vowels
-    is transcribed as a single long vowel (/VV/ → <Vː>)
+    is transcribed as a single long vowel (/VV/ → &lt;Vː&gt;)
     in order to ease of cross-linguistic comparison.
 </p>
 
@@ -66,7 +66,7 @@
 
 <p>
     To take one simple example, the Ili'uun (eray1237) word which matches
-    the concept ‘hide’ was given in the original source as <ladjōk>.
+    the concept ‘hide’ was given in the original source as &lt;ladjōk&gt;.
     This has been standardised to IPA /lad͡ʒoːk/ and is transcribed
     orthographically <i>lajook</i> in rough accordance
     with Indonesian orthography.
