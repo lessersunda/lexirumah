@@ -17,10 +17,10 @@
 
 <h2>${_('Cognate set')} ${ctx.id}</h2>
 
-<h3>${len(ctx.counterparts)} Counterparts</h3>
+<h3>${len(ctx.counterparts)} Forms</h3>
 <%util:table items="${ctx.counterparts}" args="item" options="${dict(bInfo=True)}">
     <%def name="head()">
-        <th>Counterpart</th>
+        <th>Form</th>
         <th>Language</th>
         <th>Concept</th>
         <th>Alignment</th>
