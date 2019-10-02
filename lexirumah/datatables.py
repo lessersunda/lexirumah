@@ -289,7 +289,7 @@ class Cognatesets(DataTable):
             ProviderCol(
                 self,
                 'reference',
-                get_object=lambda i: i.contribution_pk),
+                get_object=lambda i: str(vars(i))),
         ]
 
 
