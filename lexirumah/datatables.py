@@ -283,10 +283,10 @@ class Cognatesets(DataTable):
 #             IdCol(self, 'id'),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
-            ProviderCol(
-                self,
-                'reference',
-                get_object=lambda i: str(vars(i))),
+#             ProviderCol(
+#                 self,
+#                 'reference',
+#                 get_object=lambda i: str(vars(i))),
         ]
 
 
