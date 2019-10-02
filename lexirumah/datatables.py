@@ -288,8 +288,6 @@ class Cognatesets(DataTable):
 #                 'reference',
 #                 get_object=lambda i: str(vars(i))),
         ]
-        result[0].order = lambda: None
-        result[1].order = lambda: result[1].order().desc()
         return result
         
 
