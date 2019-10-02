@@ -133,7 +133,7 @@ class Counterparts(Values):
                 get_object=lambda i: i.valueset.parameter),
             LinkCol(
                 self,
-				name=name,
+				'Form (IPA)',
 				sTitle='Form (IPA)',
                 model_col=Counterpart.name),
             ItalicsCol(
