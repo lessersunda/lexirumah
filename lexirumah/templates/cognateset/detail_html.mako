@@ -23,7 +23,6 @@
         <th>Counterpart</th>
         <th>Language</th>
         <th>Concept</th>
-        <th>certain</th>
         <th>Alignment</th>
         <th>Sources</th>
         <th>Loan status</th>
@@ -31,7 +30,6 @@
     <td>${h.link(request, item.counterpart)}</td>
     <td>${h.link(request, item.counterpart.valueset.language)}</td>
     <td>${h.link(request, item.counterpart.valueset.parameter)}</td>
-    <td>${'no' if item.doubt else 'yes'}</td>
     <td>
         <span class="alignment">${item.alignment}</span>
     </td>
@@ -40,5 +38,5 @@
         <span>${h.link(request, reference.source)}</span>
     % endfor
     </td>
-    <td>${["borrowing status unknown", "clearly borrowed", "probably borrowed", "perhaps borrowed", "very little evidence for borrowing", "no evidence for borrowing"][item.counterpart.loan]}</td>
+    <td>${["", "clearly borrowed", "probably borrowed", "perhaps borrowed", "very little evidence for borrowing", "no evidence for borrowing"][item.counterpart.loan]}</td>
 </%util:table>
