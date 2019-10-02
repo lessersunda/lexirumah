@@ -15,7 +15,7 @@ from clld.web.datatables.value import Values
 from clld.web.datatables.contribution import Contributions
 from clld.web.datatables.source import Sources
 
-from clld_glottologfamily_plugin.datatables import MacroareaCol, FamilyLinkCol
+from clld_glottologfamily_plugin.datatables import MacroareaCol, FamilyCol as FamilyLinkCol
 from clld_glottologfamily_plugin.models import Family
 
 from .models import (
