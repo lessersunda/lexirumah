@@ -284,7 +284,7 @@ class Cognatesets(DataTable):
 
     def col_defs(self):
         return [
-            IdCol(self, 'id'),
+#             IdCol(self, 'id'),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
 #             ProviderCol(
