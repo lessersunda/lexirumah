@@ -279,18 +279,17 @@ def get_cognateset_references(cognateset):
 
 class Cognatesets(DataTable):
     def base_query(self, query):
-        return query.join(Cognateset.contribution)\
-            .options(joinedload(Cognateset.contribution))
+        return query.join(Contribution)
 
     def col_defs(self):
         return [
 #             IdCol(self, 'id'),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
-#             ProviderCol(
-#                 self,
-#                 'reference',
-#                 get_object=lambda i: i.contribution),
+            ProviderCol(
+                self,
+                'reference',
+                get_object=lambda i: i.contribution_pk),
         ]
 
 
