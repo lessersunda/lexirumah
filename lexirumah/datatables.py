@@ -133,8 +133,8 @@ class Counterparts(Values):
                 get_object=lambda i: i.valueset.parameter),
             LinkCol(
                 self,
-				'Form (IPA)',
-				sTitle='Form (IPA)',
+                'Form (IPA)',
+                sTitle='Form (IPA)',
                 model_col=Counterpart.name),
             ItalicsCol(
                 self,
@@ -282,7 +282,7 @@ class Cognatesets(DataTable):
         return query.join(Contribution)
 
     def col_defs(self):
-        return [
+        result = [
 #             IdCol(self, 'id'),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
@@ -291,6 +291,10 @@ class Cognatesets(DataTable):
 #                 'reference',
 #                 get_object=lambda i: str(vars(i))),
         ]
+        result[0].order = lambda: None
+        result[1].order = lambda: result[1].order().desc()
+        return result
+        
 
 
 def includeme(config):
