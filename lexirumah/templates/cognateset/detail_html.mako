@@ -25,7 +25,7 @@
         <th>Concept</th>
         <th>Alignment</th>
         <th>Sources</th>
-        <th>Loan status</th>
+        <th></th>
     </%def>
     <td>${h.link(request, item.counterpart)}</td>
     <td>${h.link(request, item.counterpart.valueset.language)}</td>
