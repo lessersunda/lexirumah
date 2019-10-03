@@ -20,7 +20,7 @@ from clld_glottologfamily_plugin.models import Family
 
 from .models import (
     LexiRumahLanguage, Counterpart, Concept, Provider, LexiRumahSource,
-    CounterpartReference, Cognateset,
+    CounterpartReference, Cognateset, CognatesetCounterpart,
 )
 
 
@@ -277,19 +277,34 @@ def get_cognateset_references(cognateset):
     for i in cognateset.references:
         yield i.source
 
+
+class CognateSourcesCol(SourcesCol):
+    def format(self, item):
+        links = set()
+        for rel in item.counterparts:
+            for source in rel.sources:
+                try:
+                    links.add(
+                        link(self.dt.req, source, **self.get_attrs(source)))
+                except AssertionError:
+                    links.add(str(source))
+        return '; '.join(links)
+
+
 class Cognatesets(DataTable):
     def base_query(self, query):
-        return query.join(Contribution)
+        query = query.options(joinedload(Cognateset.counterparts))
+        return query
 
     def col_defs(self):
         result = [
 #             IdCol(self, 'id'),
+            CognateSourcesCol(
+                self,
+                "Sources",
+                format=lambda i: "; ".join(c.sources for c in i.counterparts)),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
-#             ProviderCol(
-#                 self,
-#                 'reference',
-#                 get_object=lambda i: str(vars(i))),
         ]
         return result
         
