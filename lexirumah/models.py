@@ -150,15 +150,13 @@ class CognatesetCounterpart(Base):
     cognateset = relationship(Cognateset, backref='counterparts')
     counterpart_pk = Column(Integer, ForeignKey('counterpart.pk'))
     counterpart = relationship(Counterpart, backref='cognatesets')
+    sources = relationship(Source, secondary="cognatesetcounterpartreference", backref="cognatejudgements")
     doubt = Column(Boolean, default=False)
     alignment = Column(Unicode)
-
 
 class CognatesetCounterpartReference(Base, HasSourceMixin):
     cognatesetcounterpart_pk = Column(Integer,
                                       ForeignKey('cognatesetcounterpart.pk'))
-    cognatesetcounterpart = relationship(CognatesetCounterpart,
-                                         backref='sources')
 
 
 class CounterpartReference(Base, HasSourceMixin):
