@@ -35,7 +35,7 @@
     </td>
     <td>
     % for reference in item.sources:
-        <span>${h.link(request, reference.source)}</span>
+        <span>${h.link(request, reference)}</span>
     % endfor
     </td>
     <td>${["", "clearly borrowed", "probably borrowed", "perhaps borrowed", "very little evidence for borrowing", "no evidence for borrowing"][item.counterpart.loan]}</td>
