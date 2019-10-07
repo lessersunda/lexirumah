@@ -85,7 +85,6 @@ def prime_cache(args):
                 #CognatesetCounterpart.counterpart,
                 #common.Value.valueset
             )):
-        print(cogset)
         concepts = set()
         for cp in cogset.counterparts:
             concepts.add(cp.counterpart.valueset.parameter_pk)
@@ -101,6 +100,7 @@ def prime_cache(args):
                 except AssertionError:
                     links.add(str(source))
         cogset.source_cache = '; '.join(source_cache)
+        print(cogset, cogset.counterparts, [source for rel in cogset.source_cache for source in rel.sources])
 
     for concept in DBSession.query(Concept):
         concept.representation = DBSession.query(common.Language)\
