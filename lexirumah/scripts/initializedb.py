@@ -93,7 +93,7 @@ def prime_cache(args):
             '’/‘'.join(sorted([concept_labels[pk] for pk in concepts])))
         cogset.representation = len(cogset.counterparts)
         source_cache = set()
-        for rel in item.counterparts:
+        for rel in cogset.counterparts:
             for source in rel.sources:
                 try:
                     links.add(link(self.dt.req, source, **self.get_attrs(source)))
