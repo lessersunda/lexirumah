@@ -129,7 +129,7 @@ class Cognateset(Base, HasSourceMixin):
     contribution_pk = Column(Integer, ForeignKey('contribution.pk'))
     contribution = relationship(Contribution, backref='cognatesets')
     representation = Column(Integer)
-	source_cache = Column(Unicode)
+    source_cache = Column(Unicode)
 
 
 class CognatesetReference(Base, HasSourceMixin):
