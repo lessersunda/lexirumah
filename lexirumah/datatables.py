@@ -24,7 +24,7 @@ from lexirumah.models import (
 
 class TextCol(Col):
     def format(self, item):
-	    html.escape(super().format(item))
+        html.escape(super().format(item))
 
 
 class ProviderCol(LinkCol):
@@ -304,7 +304,7 @@ class Cognatesets(DataTable):
             Col(
                 self,
                 "Sources",
-				model_col=Cognateset.source_cache),
+                model_col=Cognateset.source_cache),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
         ]
