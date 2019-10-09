@@ -1,5 +1,7 @@
 from sqlalchemy.orm import joinedload
 
+import html
+
 from clld.db.meta import DBSession
 from clld.db.util import get_distinct_values
 from clld.db.models.common import Value, Contribution, ValueSet, Parameter, Language, Source
@@ -19,6 +21,10 @@ from lexirumah.models import (
     LexiRumahLanguage, Counterpart, Concept, Provider, LexiRumahSource,
     CounterpartReference, Cognateset, CognatesetCounterpart,
 )
+
+class TextCol(Col):
+    def format(self, item):
+	    html.escape(super().format(item))
 
 
 class ProviderCol(LinkCol):
@@ -67,7 +73,7 @@ def get_counterpart_references(counterpart):
         yield i.source
 
 
-class ItalicsCol(Col):
+class ItalicsCol(TextCol):
     def format_value(self, value):
         return "<i>{:}</i>".format(super().format_value(value))
 
@@ -138,13 +144,13 @@ class Counterparts(Values):
                 'orthography',
                 model_col=Counterpart.orthographic_form),
             # Col(self, 'loan', model_col=Counterpart.loan),
-            Col(self, 'comment', model_col=Counterpart.comment),
+            TextCol(self, 'comment', model_col=Counterpart.comment),
             SourcesCol(
                 self,
                 'sources',
                 model_col=LexiRumahSource.name,
                 get_object=get_counterpart_references),
-            Col(
+            TextCol(
                 self,
                 'given as',
                 model_col=CounterpartReference.form_given_as,
