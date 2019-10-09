@@ -293,16 +293,15 @@ class CognateSourcesCol(SourcesCol):
 
 class Cognatesets(DataTable):
     def base_query(self, query):
-        query = query.options(joinedload(Cognateset.counterparts))
         return query
 
     def col_defs(self):
         result = [
 #             IdCol(self, 'id'),
-            CognateSourcesCol(
+            Col(
                 self,
                 "Sources",
-                format=lambda i: "; ".join(c.sources for c in i.counterparts)),
+				model_col=Cognateset.source_cache),
             LinkCol(self, 'name'),
             Col(self, 'cognates', model_col=Cognateset.representation),
         ]
