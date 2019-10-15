@@ -24,7 +24,7 @@ from lexirumah.models import (
 
 class TextCol(Col):
     def format(self, item):
-        html.escape(super().format(item))
+	    return html.escape(super().format(item))
 
 
 class ProviderCol(LinkCol):
@@ -74,8 +74,8 @@ def get_counterpart_references(counterpart):
 
 
 class ItalicsCol(TextCol):
-    def format_value(self, value):
-        return "<i>{:}</i>".format(super().format_value(value))
+    def format(self, value):
+        return "<i>{:}</i>".format(super().format(value))
 
 
 class Counterparts(Values):
