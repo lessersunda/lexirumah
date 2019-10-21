@@ -20,9 +20,10 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'clld>=4.2.2',
+        'clld',
         'clldlucl',
-        'clld-glottologfamily-plugin>=2.0.1',
+        'clld-glottologfamily-plugin',
+        'csvw',
         'pycldf',
         'sqlalchemy',
         'waitress',

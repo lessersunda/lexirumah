@@ -7,7 +7,7 @@ from clld.db.meta import DBSession
 from clld.db.models.common import ValueSet
 from clld.scripts.util import Data
 from clld.lib.bibtex import EntryType, FIELDS
-from clldutils.dsv import reader
+from csvw.dsv import reader
 from pycldf.dataset import Dataset
 from pycldf.dataset import MD_SUFFIX
 from tqdm import tqdm
