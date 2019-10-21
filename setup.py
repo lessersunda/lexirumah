@@ -22,7 +22,8 @@ setup(
     install_requires=[
         'clld>=8',
         'clldlucl',
-        'clld-glottologfamily-plugin>=2.0.1',
+        'clld-glottologfamily-plugin',
+        'csvw',
         'pycldf',
         'sqlalchemy',
         'waitress',
