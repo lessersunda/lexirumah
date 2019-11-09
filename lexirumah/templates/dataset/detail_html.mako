@@ -155,6 +155,25 @@
   </blockquote>
 </p>
 
+<h3> How to cite LexiRumah</h3>
+<p>
+    The Cognate sets section contains sets of words which are formally and semantically similar,
+    and thus possibly cognate (inherited from a single ancestral etymon).
+    These cognate sets are automatically detected with LexStat
+    and are not a result of the application of the traditional comparative method through
+    identification of regular correspondences.
+    The alignment column within a single cognate set shows which segments of
+    each word correspond to one another,
+    again on the basis of automatic detection.
+</p>
+
+<p>
+    Each cognate set is named after a randomly selected term from all
+    forms in the cognate class. This term is not necessarily a
+    reconstructed proto-form or a particularly
+    frequent or representative form. 
+</p>
+
     <table class="table table-nonfluid">
         <tbody>
             <tr>
