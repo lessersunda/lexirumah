@@ -110,7 +110,7 @@
     Every item in the database is linked to its reference
     and should be cited accordingly.
     Thus, for instance if you wish to cite the Hewa (sika1262-hewa)
-    word <i>taʔa</i> ‘betel vive’. You would do so as following:
+    word <i>taʔa</i> ‘betel vine’. You would do so as following:
     “The Hewa word for ‘betel vine’ is <i>taʔa</i> (Fricke 2014)”.
     With the following entry in your list of references:
 
