@@ -155,7 +155,7 @@
   </blockquote>
 </p>
 
-<h3> How to cite LexiRumah</h3>
+<h3>Cognate sets</h3>
 <p>
     The Cognate sets section contains sets of words which are formally and semantically similar,
     and thus possibly cognate (inherited from a single ancestral etymon).
