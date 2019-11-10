@@ -158,13 +158,16 @@
 <h3>Cognate sets</h3>
 <p>
     The Cognate sets section contains sets of words which are formally and semantically similar,
-    and thus possibly cognate (inherited from a single ancestral etymon).
+    and thus likely cognate (inherited from a single ancestral etymon).
     These cognate sets are automatically detected with LexStat
-    and are not a result of the application of the traditional comparative method through
+    which means they are a rough approximation, but not exactly
+    the result of the application of the traditional comparative method through
     identification of regular correspondences.
     The alignment column within a single cognate set shows which segments of
     each word correspond to one another,
-    again on the basis of automatic detection.
+    on the basis of the same algorithm.
+    The source for all such cognate sets is given as
+    <a href="sources/biglexstat">Automatic cognate coding with LexStat, 2019</a>.
 </p>
 
 <p>
@@ -174,6 +177,7 @@
     frequent or representative form. 
 </p>
 
+<h3>Content</h3>
     <table class="table table-nonfluid">
         <tbody>
             <tr>
