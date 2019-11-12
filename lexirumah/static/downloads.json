@@ -25,5 +25,61 @@
             {"bitstreamid": "archive/v2.1.1.zip",
              "filesize": 15000000}],
         "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.1.2": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.1.2.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.2.0": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.2.0.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.2.2": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.2.2.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.2.3": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.2.3.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.2.5": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.2.5.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.2.6": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.2.6.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "2.2.9": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v2.2.9.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
+    },
+
+    "3.0.0": {
+        "bitstreams": [
+            {"bitstreamid": "archive/v3.0.0.zip",
+             "filesize": 15000000}],
+        "oid": "lessersunda/lexirumah-data"
     }
 }
