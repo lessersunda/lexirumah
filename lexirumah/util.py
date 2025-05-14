@@ -10,7 +10,7 @@ from clld.web.util.htmllib import HTML
 from clld.web.maps import SelectedLanguagesMap
 
 from lexirumah.models import LexiRumahLanguage, Source, Counterpart
-from lexirumah.maps import HighZoomSelectedLanguagesMap
+from lexirumah.maps import LanguagesMap
 
 
 def concepticon_link(request, concept):
