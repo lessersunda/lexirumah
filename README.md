@@ -1,2 +1,2 @@
-# lexibank
-clld app serving lexibank
+# lexirumah
+clld app serving lexirumah

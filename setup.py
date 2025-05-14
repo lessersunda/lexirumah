@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='lexibank',
+    name='lexirumah',
     version='0.0',
-    description='lexibank',
+    description='lexirumah',
     long_description='',
     classifiers=[
         "Programming Language :: Python",
@@ -44,8 +44,8 @@ setup(
             'zope.component>=3.11.0',
         ],
     },
-    test_suite="lexibank",
+    test_suite="lexirumah",
     entry_points="""\
 [paste.app_factory]
-main = lexibank:main
+main = lexirumah:main
 """)

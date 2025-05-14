@@ -22,7 +22,7 @@ _('Valueset')
 _('Valuesets')
 
 
-class LexibankCtxFactoryQuery(CtxFactoryQuery):
+class LexiRumahCtxFactoryQuery(CtxFactoryQuery):
     def refined_query(self, query, model, req):
         if model == Contribution:
             query = query.options(joinedload(Contribution.data))
@@ -58,6 +58,6 @@ def main(global_config, **settings):
     config.include('clldlucl')
     config.include('clld_glottologfamily_plugin')
     config.registry.registerUtility(MyMapMarker(), IMapMarker)
-    config.registry.registerUtility(LexibankCtxFactoryQuery(), ICtxFactoryQuery)
+    config.registry.registerUtility(LexiRumahCtxFactoryQuery(), ICtxFactoryQuery)
     config.register_resource('cognateset', models.Cognateset, ICognateset, with_index=True)
     return config.make_wsgi_app()

@@ -8,8 +8,8 @@
 </%block>
 
 <%block name="head">
-    <script src="${request.static_url('lexibank:static/alignment.js')}"></script>
-    <link rel="stylesheet" href="${request.static_url('lexibank:static/alignment.css')}" type="text/css"/>
+    <script src="${request.static_url('lexirumah:static/alignment.js')}"></script>
+    <link rel="stylesheet" href="${request.static_url('lexirumah:static/alignment.css')}" type="text/css"/>
     <script>
         $( document ).ready(function() {
             var alignments = document.getElementsByClassName("alignment");

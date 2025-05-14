@@ -9,14 +9,14 @@ from clld.db.models.common import Language, Value, ValueSet
 from clld.web.util.htmllib import HTML
 from clld.web.maps import SelectedLanguagesMap
 
-from lexibank.models import LexibankLanguage, Source, Counterpart
-from lexibank.maps import HighZoomSelectedLanguagesMap
+from lexirumah.models import LexiRumahLanguage, Source, Counterpart
+from lexirumah.maps import HighZoomSelectedLanguagesMap
 
 
 def concepticon_link(request, concept):
     return HTML.a(
         HTML.img(
-            src=request.static_url('lexibank:static/concepticon_logo.png'),
+            src=request.static_url('lexirumah:static/concepticon_logo.png'),
             height=20,
             width=30),
         title='corresponding concept set at Concepticon',
@@ -46,13 +46,13 @@ def value_detail_html(context=None, request=None, **kw):
 def contribution_detail_html(context=None, request=None, **kw):
     langs = DBSession.query(Language)\
         .filter(Language.pk.in_(context.jsondata['language_pks']))\
-        .options(joinedload(LexibankLanguage.family))
+        .options(joinedload(LexiRumahLanguage.family))
     return {'map': HighZoomSelectedLanguagesMap(context, request, list(langs))}
 
 
 def dataset_detail_html(context=None, request=None, **kw):
-    families = DBSession.query(Family.id, Family.name, func.count(LexibankLanguage.id).label('c'))\
-        .join(LexibankLanguage)\
+    families = DBSession.query(Family.id, Family.name, func.count(LexiRumahLanguage.id).label('c'))\
+        .join(LexiRumahLanguage)\
         .group_by(Family.id, Family.name)\
         .order_by(desc(text('c')))
     example_reference = DBSession.query(Source).first()

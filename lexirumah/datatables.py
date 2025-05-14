@@ -15,8 +15,8 @@ from clld.web.datatables.source import Sources
 from clld_glottologfamily_plugin.datatables import MacroareaCol, FamilyLinkCol
 from clld_glottologfamily_plugin.models import Family
 
-from lexibank.models import (
-    LexibankLanguage, Counterpart, Concept, Provider, LexibankSource,
+from lexirumah.models import (
+    LexiRumahLanguage, Counterpart, Concept, Provider, LexiRumahSource,
     CounterpartReference, Cognateset,
 )
 
@@ -46,10 +46,10 @@ class SourcesCol(LinkCol):
 
 from clld.web.datatables.base import DataTable, Col, LinkCol, DetailsRowLinkCol
 from clld.web.datatables.source import TypeCol
-class LexibankSources(Sources):
+class LexiRumahSources(Sources):
     def base_query(self, query):
         query = Sources.base_query(self, query)
-        query = query.join(LexibankSource.provider).options(joinedload(LexibankSource.provider))
+        query = query.join(LexiRumahSource.provider).options(joinedload(LexiRumahSource.provider))
         return query
 
     def col_defs(self):
@@ -93,9 +93,9 @@ class Counterparts(Values):
         if self.parameter:
             query = query \
                 .join(ValueSet.language) \
-                .outerjoin(LexibankLanguage.family) \
+                .outerjoin(LexiRumahLanguage.family) \
                 .options(joinedload_all(
-                    Value.valueset, ValueSet.language, LexibankLanguage.family))
+                    Value.valueset, ValueSet.language, LexiRumahLanguage.family))
             return query.filter(ValueSet.parameter_pk == self.parameter.pk)
 
         if self.contribution:
@@ -117,11 +117,11 @@ class Counterparts(Values):
 
     def col_defs(self):
         template = [
-            FamilyLinkCol(self, 'family', LexibankLanguage, get_object=lambda i: i.valueset.language),
+            FamilyLinkCol(self, 'family', LexiRumahLanguage, get_object=lambda i: i.valueset.language),
             LinkCol(
                 self,
                 'lect',
-                model_col=LexibankLanguage.name,
+                model_col=LexiRumahLanguage.name,
                 get_object=lambda i: i.valueset.language),
             LinkCol(
                 self,
@@ -141,7 +141,7 @@ class Counterparts(Values):
             SourcesCol(
                 self,
                 'sources',
-                model_col=LexibankSource.name,
+                model_col=LexiRumahSource.name,
                 get_object=get_counterpart_references),
             Col(
                 self,
@@ -193,7 +193,7 @@ class EthnologueLinkCol(Col):
             return ''
 
 
-class LexibankLanguages(Languages):
+class LexiRumahLanguages(Languages):
     __constraints__ = [Contribution]
 
     def base_query(self, query):
@@ -202,8 +202,8 @@ class LexibankLanguages(Languages):
                 .filter(ValueSet.contribution_pk == self.contribution.pk)\
                 .distinct()\
                 .subquery()
-            query = query.filter(LexibankLanguage.pk.in_(sq))
-        return query.outerjoin(Family).options(joinedload(LexibankLanguage.family))
+            query = query.filter(LexiRumahLanguage.pk.in_(sq))
+        return query.outerjoin(Family).options(joinedload(LexiRumahLanguage.family))
 
     def col_defs(self):
         return [
@@ -216,8 +216,8 @@ class LexibankLanguages(Languages):
             Col(self,
                 'longitude',
                 sDescription='<small>The geographic longitude</small>'),
-            Col(self, 'region', model_col=LexibankLanguage.region),
-            FamilyLinkCol(self, 'family', LexibankLanguage),
+            Col(self, 'region', model_col=LexiRumahLanguage.region),
+            FamilyLinkCol(self, 'family', LexiRumahLanguage),
             GlottologLinkCol(self, 'Glottolog'),
             EthnologueLinkCol(self, 'Ethnologue'),
         ]
@@ -292,8 +292,8 @@ class Cognatesets(DataTable):
 
 def includeme(config):
     config.register_datatable('cognatesets', Cognatesets)
-    config.register_datatable('languages', LexibankLanguages)
+    config.register_datatable('languages', LexiRumahLanguages)
     config.register_datatable('contributions', Providers)
     config.register_datatable('parameters', Concepts)
     config.register_datatable('values', Counterparts)
-    config.register_datatable('sources', LexibankSources)
+    config.register_datatable('sources', LexiRumahSources)

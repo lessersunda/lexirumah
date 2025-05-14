@@ -9,7 +9,7 @@ from clld.web.adapters.base import Representation
 from clld.web.adapters.excel import Values, QUERY_LIMIT
 from clld.lib.excel import hyperlink
 
-from lexibank.models import LexibankLanguage
+from lexirumah.models import LexiRumahLanguage
 
 
 SQL = """select s1.vpk, s2.vpk, s2.ppk, s2.fpk from
@@ -25,7 +25,7 @@ SQL = """select s1.vpk, s2.vpk, s2.ppk, s2.fpk from
     select
         v2.name as form, v2.pk as vpk, vs2.parameter_pk as ppk, vs2.contribution_pk as cpk, vs2.language_pk as lpk, ll.family_pk as fpk
     from
-        value as v2, valueset as vs2, language as l, lexibanklanguage as ll
+        value as v2, valueset as vs2, language as l, lexirumahlanguage as ll
     where
         v2.valueset_pk = vs2.pk and vs2.language_pk = l.pk and l.pk = ll.pk
 ) as s2
@@ -56,7 +56,7 @@ class Colexifications(Representation):
             v.pk: v for v in DBSession.query(Value)
             .filter(Value.pk.in_(list(chain(*pairs))))
             .options(
-                joinedload(Value.valueset).joinedload(ValueSet.language).joinedload(LexibankLanguage.family),
+                joinedload(Value.valueset).joinedload(ValueSet.language).joinedload(LexiRumahLanguage.family),
                 joinedload(Value.valueset, ValueSet.parameter),
                 joinedload(Value.valueset, ValueSet.contribution))
             }

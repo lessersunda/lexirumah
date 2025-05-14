@@ -15,10 +15,10 @@ from clldutils.jsonlib import load
 from pyglottolog.api import Glottolog
 from pyconcepticon.api import Concepticon
 
-import lexibank
-from lexibank.scripts.util import import_cldf
-from lexibank.models import (
-    LexibankLanguage, Concept, Provider, Counterpart, Cognateset, CognatesetCounterpart,
+import lexirumah
+from lexirumah.scripts.util import import_cldf
+from lexirumah.models import (
+    LexiRumahLanguage, Concept, Provider, Counterpart, Cognateset, CognatesetCounterpart,
 )
 
 
@@ -30,7 +30,7 @@ def main(args):
 
     with transaction.manager:
         dataset = common.Dataset(
-            id=lexibank.__name__,
+            id=lexirumah.__name__,
             name="LexiSunDa",
             publisher_name="Leiden University Centre for Linguistics",
             publisher_place="Leiden",
@@ -44,10 +44,10 @@ def main(args):
         DBSession.add(dataset)
 
     glottolog_repos = Path(
-        lexibank.__file__).parent.parent.parent.parent.joinpath('glottolog3', 'glottolog')
+        lexirumah.__file__).parent.parent.parent.parent.joinpath('glottolog3', 'glottolog')
     languoids = {l.id: l for l in Glottolog(glottolog_repos).languoids()}
     concepticon = Concepticon(
-        Path(lexibank.__file__).parent.parent.parent.parent.joinpath('concepticon', 'concepticon-data'))
+        Path(lexirumah.__file__).parent.parent.parent.parent.joinpath('concepticon', 'concepticon-data'))
     conceptsets = {c.id: c for c in concepticon.conceptsets.values()}
 
     skip = True
@@ -65,7 +65,7 @@ def main(args):
     with transaction.manager:
         load_families(
             Data(),
-            DBSession.query(LexibankLanguage),
+            DBSession.query(LexiRumahLanguage),
             glottolog_repos=glottolog_repos,
             isolates_icon='tcccccc')
 

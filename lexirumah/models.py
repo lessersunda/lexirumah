@@ -21,7 +21,7 @@ from clld.db.models.common import (
 
 from clld_glottologfamily_plugin.models import HasFamilyMixin
 
-from lexibank.interfaces import ICognateset
+from lexirumah.interfaces import ICognateset
 
 
 def uuid():
@@ -86,7 +86,7 @@ class Concept(CustomModelMixin, Parameter):
 
 
 @implementer(interfaces.ILanguage)
-class LexibankLanguage(CustomModelMixin, Language, HasFamilyMixin):
+class LexiRumahLanguage(CustomModelMixin, Language, HasFamilyMixin):
     pk = Column(Integer, ForeignKey('language.pk'), primary_key=True)
     region = Column(Unicode)
     culture = Column(Unicode)
@@ -111,7 +111,7 @@ class LexibankLanguage(CustomModelMixin, Language, HasFamilyMixin):
 
 
 @implementer(interfaces.ISource)
-class LexibankSource(CustomModelMixin, Source):
+class LexiRumahSource(CustomModelMixin, Source):
     pk = Column(Integer, ForeignKey('source.pk'), primary_key=True)
     provider_pk = Column(Integer, ForeignKey('provider.pk'))
     provider = relationship(Provider, backref='sources')
