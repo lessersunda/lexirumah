@@ -1,6 +1,6 @@
 # LexiRumah
 
-An adaptation of LexiRumah for languages of the Lesser Sunda islands.
+An adaptation of Lexibank for languages of the Lesser Sunda islands.
 
 LexiRumah consists of several pieces:
 - The LexiRumah dataset in CLDF format: `lexirumah-data`
