@@ -17,14 +17,12 @@ from clld.cliutil import Data, bibtex2source
 from clld.db.meta import DBSession
 from clld.db.models import common
 from clld.lib.bibtex import EntryType
-from clld.scripts.util import parsed_args
 from clld_glottologfamily_plugin.models import Family
 from clld_glottologfamily_plugin.util import load_families
 from clldutils.jsonlib import load
 from clldutils.path import Path, git_describe
 from csvw.dsv import reader
 from nameparser import HumanName
-from pycldf import Dataset
 from pycldf.db import Database
 from pyclts import CLTS
 from pyclts.models import Sound
@@ -63,7 +61,7 @@ CLICS_LIST = pathlib.Path(
 )
 
 
-def get_dataset(fname: str = "Wordlist-metadata.json"):
+def get_dataset(fname: str = "Wordlist-metadata.json") -> pycldf.Dataset:
     """Load a CLDF dataset.
 
     Load the file as `json` CLDF metadata description file, or as metadata-free
@@ -87,8 +85,8 @@ def get_dataset(fname: str = "Wordlist-metadata.json"):
     if not fname.exists():
         raise FileNotFoundError("{:} does not exist".format(fname))
     if fname.suffix == ".json":
-        return Dataset.from_metadata(fname)
-    return Dataset.from_data(fname)
+        return pycldf.Dataset.from_metadata(fname)
+    return pycldf.Dataset.from_data(fname)
 
 
 def iter_rows(db, table, query, params=None):
@@ -101,11 +99,11 @@ def iter_rows(db, table, query, params=None):
         yield dict(zip(cols, row))
 
 
-def init_main(args):
-    bipa = CLTS(pathlib.Path("/home/robert/projects/cldf-clts/clts-data")).bipa
+def init_main():
+    # bipa = CLTS(pathlib.Path("/home/robert/projects/cldf-clts/clts-data")).bipa
 
     cldf = args.cldf
-    db = Database(cldf, fname=cldf.directory / ".." / "lexirumah.sqlite")
+    db = Database(cldf, fname="lexirumah.sqlite")
     clusters = {
         row["CONCEPTICON_ID"]: row
         for row in reader(CLICS_LIST, delimiter="\t", dicts=True)
@@ -833,17 +831,10 @@ def db_main():
 
 def main():
     """Construct a new database from scratch."""
-    print(os.path.join(os.path.dirname(__file__), "lexirumah_for_create_database.ini"))
-    args = parsed_args(
-        args=[
-            os.path.join(os.path.dirname(__file__), "lexirumah_for_create_database.ini")
-        ]
-    )
-
     with transaction.manager:
         db_main()
     with transaction.manager:
-        init_main(args)
+        init_main()
 
 
 if __name__ == "__main__":
