@@ -61,7 +61,7 @@ CLICS_LIST = pathlib.Path(
 )
 
 
-def get_dataset(fname: str = "Wordlist-metadata.json") -> pycldf.Dataset:
+def get_dataset(fname: str = "cldf-metadata.json") -> pycldf.Dataset:
     """Load a CLDF dataset.
 
     Load the file as `json` CLDF metadata description file, or as metadata-free
@@ -102,7 +102,7 @@ def iter_rows(db, table, query, params=None):
 def init_main():
     # bipa = CLTS(pathlib.Path("/home/robert/projects/cldf-clts/clts-data")).bipa
 
-    cldf = args.cldf
+    cldf = get_dataset()
     db = Database(cldf, fname="lexirumah.sqlite")
     clusters = {
         row["CONCEPTICON_ID"]: row
@@ -831,8 +831,7 @@ def db_main():
 
 def main():
     """Construct a new database from scratch."""
-    with transaction.manager:
-        db_main()
+    db_main()
     with transaction.manager:
         init_main()
 
